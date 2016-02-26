@@ -16,21 +16,21 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.widgets.Label;
 
 
 public class SlotMachine {
 	private ArrayList<String> oggetti = new ArrayList<String>();
 	protected Shell shell;
-
-	private Text text;
-	private Text text_1;
-	private Text text_2;
-
-
 	private Text cas1;
 	private Text cas2;
 	private Text cas3;
 	private Random random;
+	private Label p1;
+	private Label p2;
+	private Label p3;
 
 	
 	public static void main(String[] args) {
@@ -58,6 +58,11 @@ public class SlotMachine {
 	
 	protected void createContents() {
 		shell = new Shell();
+		shell.addPaintListener(new PaintListener() {
+			public void paintControl(PaintEvent arg0) {
+				text_1.setTouchEnabled(false);
+			}
+		});
 		shell.setSize(504, 449);
 		shell.setText("SWT Application");
 
@@ -67,15 +72,13 @@ public class SlotMachine {
 		oggetti.add("pesca");
 		
 		cas1 = new Text(shell, SWT.BORDER);
-		cas1.setBounds(44, 231, 82, 66);
+		cas1.setBounds(39, 131, 82, 66);
 		
 		cas2 = new Text(shell, SWT.BORDER);
-		cas2.setBounds(169, 231, 76, 66);
+		cas2.setBounds(195, 131, 76, 66);
 		
 		cas3 = new Text(shell, SWT.BORDER);
-		cas3.setBounds(320, 231, 76, 66);
-		
-		
+		cas3.setBounds(360, 131, 76, 66);
 
 		Button btnReset = new Button(shell, SWT.NONE);
 		btnReset.setBounds(10, 327, 75, 63);
@@ -91,9 +94,9 @@ public class SlotMachine {
 			public void widgetSelected(SelectionEvent e) {
 				int puntata;
 				try {
-					puntata=Integer.parseInt(text_1.getText());
+					puntata=Integer.parseInt(p2.getText());
 					puntata++;
-					text_1.setText(Integer.toString(puntata));
+					p2.setText(Integer.toString(puntata));
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -109,10 +112,9 @@ public class SlotMachine {
 			public void widgetSelected(SelectionEvent e) {
 				int allin;
 				try {
-					allin=Integer.parseInt(text.getText());
-					text_1.setText(Integer.toString(allin));
+					allin=Integer.parseInt(p1.getText());
+					p2.setText(Integer.toString(allin));
 				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -134,19 +136,23 @@ public class SlotMachine {
 		btnSpin.setText("SPIN");
 
 		btnSpin.setBounds(382, 327, 75, 63);
-		
-		text = new Text(shell, SWT.BORDER);
-		text.setText("3456");
-		text.setBounds(10, 246, 216, 53);
-		
-		text_1 = new Text(shell, SWT.BORDER);
-		text_1.setText("0");
-		text_1.setBounds(232, 246, 94, 53);
-		
-		text_2 = new Text(shell, SWT.BORDER);
-		text_2.setBounds(333, 246, 145, 53);
 
 		btnSpin.setBounds(382, 327, 75, 63);
+		
+		p1 = new Label(shell, SWT.NONE);
+		p1.setAlignment(SWT.CENTER);
+		p1.setBounds(10, 265, 216, 15);
+		p1.setText("1000000");
+		
+		p2 = new Label(shell, SWT.NONE);
+		p2.setAlignment(SWT.CENTER);
+		p2.setBounds(232, 265, 94, 15);
+		p2.setText("0000000000");
+		
+		p3 = new Label(shell, SWT.NONE);
+		p3.setAlignment(SWT.CENTER);
+		p3.setBounds(333, 265, 145, 15);
+		p3.setText("00000000000000");
 
 	}
 }
