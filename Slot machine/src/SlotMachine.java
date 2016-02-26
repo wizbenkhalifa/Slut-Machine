@@ -9,14 +9,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-
-public class SlotMachine {
-	private ArrayList<String> oggetti = new ArrayList<String>();
-	protected Shell shell;
-	private Text cas1;
-	private Text cas2;
-	private Text cas3;
-	private Random random;
 	
 	public static void main(String[] args) {
 		try {
@@ -44,13 +36,7 @@ public class SlotMachine {
 	protected void createContents() {
 		shell = new Shell();
 		shell.setSize(450, 300);
-		shell.setText("SWT Application");
-		
-		oggetti.add("mela");
-		oggetti.add("banana");
-		oggetti.add("pesca");
-		
-		cas1 = new Text(shell, SWT.BORDER);
+		shell.setText("SWT Application"shell, SWT.BORDER);
 		cas1.setBounds(10, 32, 82, 66);
 		
 		cas2 = new Text(shell, SWT.BORDER);
@@ -58,8 +44,7 @@ public class SlotMachine {
 		
 		cas3 = new Text(shell, SWT.BORDER);
 		cas3.setBounds(289, 32, 76, 66);
-		
-		Button btnProva = new Button(shell, SWT.NONE);
+	10, 10tton btnProva = new Button(shell, SWT.NONE);
 		btnProva.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
