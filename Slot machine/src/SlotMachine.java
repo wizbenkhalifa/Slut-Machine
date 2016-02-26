@@ -9,6 +9,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.SWT;
 
 public class SlotMachine {
 	private ArrayList<String> oggetti = new ArrayList<String>();
@@ -43,7 +45,7 @@ public class SlotMachine {
 	
 	protected void createContents() {
 		shell = new Shell();
-		shell.setSize(450, 300);
+		shell.setSize(504, 449);
 		shell.setText("SWT Application");
 		
 		oggetti.add("mela");
@@ -72,6 +74,25 @@ public class SlotMachine {
 		});
 		btnProva.setBounds(44, 145, 75, 25);
 		btnProva.setText("prova");
+		Button btnReset = new Button(shell, SWT.NONE);
+		btnReset.setBounds(10, 327, 75, 63);
+		btnReset.setText("RESET");
+		
+		Button btnPlayTable = new Button(shell, SWT.NONE);
+		btnPlayTable.setText("PLAY TABLE");
+		btnPlayTable.setBounds(89, 327, 75, 63);
+		
+		Button btnBetOne = new Button(shell, SWT.NONE);
+		btnBetOne.setText("BET ONE");
+		btnBetOne.setBounds(170, 327, 75, 63);
+		
+		Button btnBetMax = new Button(shell, SWT.NONE);
+		btnBetMax.setText("BET MAX");
+		btnBetMax.setBounds(251, 327, 75, 63);
+		
+		Button btnSpin = new Button(shell, SWT.NONE);
+		btnSpin.setText("SPIN");
+		btnSpin.setBounds(382, 327, 75, 63);
 
 	}
 }
