@@ -53,34 +53,22 @@ public class SlotMachine {
 		oggetti.add("pesca");
 		
 		cas1 = new Text(shell, SWT.BORDER);
-		cas1.setBounds(10, 32, 82, 66);
+		cas1.setBounds(44, 231, 82, 66);
 		
 		cas2 = new Text(shell, SWT.BORDER);
-		cas2.setBounds(155, 32, 76, 66);
+		cas2.setBounds(169, 231, 76, 66);
 		
 		cas3 = new Text(shell, SWT.BORDER);
-		cas3.setBounds(289, 32, 76, 66);
+		cas3.setBounds(320, 231, 76, 66);
 		
-		Button btnProva = new Button(shell, SWT.NONE);
-		btnProva.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				random = new Random();
-				cas1.setText(oggetti.get(random.nextInt(3)));
-				cas2.setText(oggetti.get(random.nextInt(3)));
-				cas3.setText(oggetti.get(random.nextInt(3)));
-				//if()
-			}
-		});
-		btnProva.setBounds(44, 145, 75, 25);
-		btnProva.setText("prova");
+		
 		Button btnReset = new Button(shell, SWT.NONE);
 		btnReset.setBounds(10, 327, 75, 63);
 		btnReset.setText("RESET");
 		
 		Button btnPlayTable = new Button(shell, SWT.NONE);
 		btnPlayTable.setText("PLAY TABLE");
-		btnPlayTable.setBounds(89, 327, 75, 63);
+		btnPlayTable.setBounds(91, 327, 75, 63);
 		
 		Button btnBetOne = new Button(shell, SWT.NONE);
 		btnBetOne.setText("BET ONE");
@@ -91,6 +79,15 @@ public class SlotMachine {
 		btnBetMax.setBounds(251, 327, 75, 63);
 		
 		Button btnSpin = new Button(shell, SWT.NONE);
+		btnSpin.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				random = new Random();
+				cas1.setText(oggetti.get(random.nextInt(3)));
+				cas2.setText(oggetti.get(random.nextInt(3)));
+				cas3.setText(oggetti.get(random.nextInt(3)));
+			}
+		});
 		btnSpin.setText("SPIN");
 		btnSpin.setBounds(382, 327, 75, 63);
 
