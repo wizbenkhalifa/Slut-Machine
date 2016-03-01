@@ -1,14 +1,15 @@
+import org.eclipse.swt.graphics.Image;
 
 public class Casella implements Comparable{
 
 		private String nome;
-		private String image;
+		private Image image;
 		
 		public Casella(){
 			this.nome = "";
-			this.image = "";
+			this.image = null;
 		}
-		public Casella(String nome, String image){
+		public Casella(String nome, Image image){
 			this.nome = nome;
 			this.image = image;
 		}
@@ -25,10 +26,10 @@ public class Casella implements Comparable{
 		public void setNome(String nome) {
 			this.nome = nome;
 		}
-		public String getImage() {
+		public Image getImage() {
 			return image;
 		}
-		public void setImage(String image) {
+		public void setImage(Image image) {
 			this.image = image;
 		}
 		public String toString() {
