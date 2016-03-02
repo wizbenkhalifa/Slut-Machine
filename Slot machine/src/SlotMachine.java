@@ -14,6 +14,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Drawable;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -28,6 +29,12 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.wb.swt.SWTResourceManager;
+
+import java.awt.*;
+import javax.swing.*;
+
+import java.applet.Applet;
 
 
 public class SlotMachine {
@@ -41,7 +48,7 @@ public class SlotMachine {
 	private Label p2;
 	private Label p3;
 	Display Display;
-	private GC gc;		
+	private GC gc;	
 	public static void main(String[] args) {
 		try {
 			SlotMachine window = new SlotMachine();
@@ -66,12 +73,14 @@ public class SlotMachine {
 
 	
 	protected void createContents() {
+		Color green = new Color(null,218,253,218);
 		shell = new Shell();
 		shell.setSize(939, 462);
 		shell.setText("SWT Application");
 		oggetti.add(new Casella("mela", new Image(Display, "mela.jpg/")));
 		oggetti.add(new Casella("banana", new Image(Display, "banana.jpg/")));
 		oggetti.add(new Casella("pesca", new Image(Display, "pesca.jpg/")));
+		
 		
 		Canvas canvas = new Canvas(shell, SWT.NONE);
 		canvas.setBounds(504, 12, 100, 104);
@@ -129,6 +138,9 @@ public class SlotMachine {
 		btnBetMax.setBounds(251, 327, 75, 63);
 		
 		Button btnSpin = new Button(shell, SWT.NONE);
+		btnSpin.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
+		btnSpin.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
+		
 		btnSpin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
