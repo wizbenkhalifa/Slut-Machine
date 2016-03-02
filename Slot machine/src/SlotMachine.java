@@ -69,9 +69,9 @@ public class SlotMachine {
 		shell = new Shell();
 		shell.setSize(939, 462);
 		shell.setText("SWT Application");
-		oggetti.add(new Casella("mela", new Image(Display, "C:/Users/psman/git/Slut-Machine/Slot machine/mela.jpg/")));
-		oggetti.add(new Casella("banana", new Image(Display, "C:/Users/psman/git/Slut-Machine/Slot machine/banana.jpg/")));
-		oggetti.add(new Casella("pesca", new Image(Display, "C:/Users/psman/git/Slut-Machine/Slot machine/pesca.jpg/")));
+		oggetti.add(new Casella("mela", new Image(Display, "mela.jpg/")));
+		oggetti.add(new Casella("banana", new Image(Display, "banana.jpg/")));
+		oggetti.add(new Casella("pesca", new Image(Display, "pesca.jpg/")));
 		
 		Canvas canvas = new Canvas(shell, SWT.NONE);
 		canvas.setBounds(504, 12, 100, 104);
@@ -141,7 +141,7 @@ public class SlotMachine {
 					}
 					for(int i=0; i<oggetti.get(k).getImage().getBounds().height-10; i++){
 						gc.drawImage(oggetti.get(k).getImage(), 0, i);
-						t++;
+						//t++;
 						try {
 							Thread.sleep(t);
 						} catch (InterruptedException e1) {
@@ -176,20 +176,5 @@ public class SlotMachine {
 		p3.setAlignment(SWT.CENTER);
 		p3.setBounds(333, 265, 145, 15);
 		p3.setText("00000000000000");
-		
-		Label c1 = new Label(shell, SWT.NONE);
-		c1.setBounds(35, 126, 100, 99);
-		c1.setText("New Label");
-		c1.setImage(oggetti.get(0).getImage());
-		
-		Label c2 = new Label(shell, SWT.NONE);
-		c2.setBounds(190, 126, 100, 99);
-		c2.setText("New Label");
-		c2.setImage(oggetti.get(1).getImage());
-		
-		Label c3 = new Label(shell, SWT.NONE);
-		c3.setText("New Label");
-		c3.setBounds(346, 126, 100, 99);
-		c3.setImage(oggetti.get(2).getImage());
 	}
 }
