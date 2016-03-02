@@ -29,7 +29,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Canvas;
 
-
 public class SlotMachine {
 	private ArrayList<Casella> oggetti = new ArrayList<Casella>();
 	protected Shell shell;
@@ -40,6 +39,7 @@ public class SlotMachine {
 	private Label p1;
 	private Label p2;
 	private Label p3;
+	private static Canvas canvas;
 	Display Display;
 	private GC gc;		
 	public static void main(String[] args) {
@@ -74,7 +74,7 @@ public class SlotMachine {
 		oggetti.add(new Casella("pesca", new Image(Display, "pesca.jpg/")));
 		
 		Canvas canvas = new Canvas(shell, SWT.NONE);
-		canvas.setBounds(504, 12, 100, 104);
+		canvas.setBounds(30, 115, 100, 104);
 		
 		cas1 = new Text(shell, SWT.BORDER);
 		cas1.setBounds(30, 10, 82, 66);
@@ -132,14 +132,22 @@ public class SlotMachine {
 		btnSpin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				random = new Random();
-				int k =0, l, t = 5;
 				gc = new GC(canvas);
+				SimpleRunner r = new SimpleRunner();
+				Thread t1 = new Thread (r);
+				t1.run();;
+				SimpleRunner r2 = new SimpleRunner();
+				Thread t2 = new Thread (r2);
+				t2.start();;
+				/*random = new Random();
+				int k =0, l;
+				long t = 5;
 				for(int j=0; j<random.nextInt(40 - 15)+15; j++, k++){
 					if(k>2){
 						k = 0;
 					}
-					for(int i=0; i<oggetti.get(k).getImage().getBounds().height-10; i++){
+					
+					for(int i=0; i<oggetti.get(k).getImage().getBounds().height+30; i++){
 						gc.drawImage(oggetti.get(k).getImage(), 0, i);
 						//t++;
 						try {
@@ -151,8 +159,8 @@ public class SlotMachine {
 					System.out.println(k);
 				}
 				k--;
-				System.out.println("fuori" + k);
-				gc.drawImage(oggetti.get(k).getImage(), 0, 0);
+				//System.out.println("fuori" + k);*/
+				//gc.drawImage(oggetti.get(k).getImage(), 0, 0);
 				cas1.setText(oggetti.get(random.nextInt(3)).getNome());
 				cas2.setText(oggetti.get(random.nextInt(3)).getNome());
 				cas3.setText(oggetti.get(random.nextInt(3)).getNome());
@@ -164,17 +172,57 @@ public class SlotMachine {
 		
 		p1 = new Label(shell, SWT.NONE);
 		p1.setAlignment(SWT.CENTER);
-		p1.setBounds(10, 265, 216, 15);
+		p1.setBounds(30, 265, 100, 15);
 		p1.setText("1000000");
 		
 		p2 = new Label(shell, SWT.NONE);
 		p2.setAlignment(SWT.CENTER);
-		p2.setBounds(232, 265, 94, 15);
+		p2.setBounds(194, 265, 100, 15);
 		p2.setText("0000000000");
 		
 		p3 = new Label(shell, SWT.NONE);
 		p3.setAlignment(SWT.CENTER);
-		p3.setBounds(333, 265, 145, 15);
+		p3.setBounds(346, 265, 111, 15);
 		p3.setText("00000000000000");
+		
+		Canvas canvas_1 = new Canvas(shell, SWT.NONE);
+		canvas_1.setBounds(194, 115, 100, 104);
+		
+		Canvas canvas_2 = new Canvas(shell, SWT.NONE);
+		canvas_2.setBounds(346, 115, 100, 104);
 	}
+	
+	class SimpleRunner implements Runnable{
+		 int i;
+
+		 public void run(){
+		  i = 0;
+		  
+		  while (true){
+			  random = new Random();
+				int k =0, l;
+				long t = 5;
+				gc = new GC(canvas);
+				for(int j=0; j<random.nextInt(40 - 15)+15; j++, k++){
+					if(k>2){
+						k = 0;
+					}
+					
+					for(int i=0; i<oggetti.get(k).getImage().getBounds().height+30; i++){
+						gc.drawImage(oggetti.get(k).getImage(), 0, i);
+						//t++;
+						try {
+							Thread.sleep(t);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+					}
+					System.out.println(k);
+				}
+				k--;
+				gc.drawImage(oggetti.get(k).getImage(), 0, 0);
+		    break;
+		   }
+		 }
+		}
 }
