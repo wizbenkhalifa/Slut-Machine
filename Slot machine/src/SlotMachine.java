@@ -42,7 +42,7 @@ public class SlotMachine {
 	private Label p2;
 	private Label p3;
 	private static Canvas canvas;
-	Display Display;
+	static Display d= Display.getDefault();
 	private GC gc;	
 	private GC gc2;	
 	private GC gc3;	
@@ -85,9 +85,14 @@ public class SlotMachine {
 		shell.setSize(497, 462);
 		shell.setText("SWT Application");
 		
-		oggetti.add(new Casella("mela", new Image(Display, "mela.jpg/")));
-		oggetti.add(new Casella("banana", new Image(Display, "banana.jpg/")));
-		oggetti.add(new Casella("pesca", new Image(Display, "pesca.jpg/")));
+		Label lblNewLabel = new Label(shell, SWT.NONE);
+		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
+		lblNewLabel.setBounds(48, 40, 55, 15);
+		lblNewLabel.setText("New Label");
+		
+		oggetti.add(new Casella("mela", new Image(d, "mela.jpg/")));
+		oggetti.add(new Casella("banana", new Image(d, "banana.jpg/")));
+		oggetti.add(new Casella("pesca", new Image(d, "pesca.jpg/")));
 		
 		Canvas canvas2 = new Canvas(shell, SWT.NONE);
 		canvas2.setBounds(194, 115, 100, 104);
@@ -266,13 +271,14 @@ public class SlotMachine {
 				
 				Thread tCas4 = null;
 				tCas4 = new Thread () {
+					@SuppressWarnings("deprecation")
 					@Override
 					public void run () {
 						while(true){
 							System.out.println(t3F);
 							if(t3F && t2F && t1F){
 								System.out.println("entrato");
-								Display.getDefault().asyncExec(new Runnable() {
+								org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
 									@Override
 									public void run() {
 										btnSpin.setEnabled(true);
@@ -281,9 +287,16 @@ public class SlotMachine {
 								t1Start = false;
 								t2Start = false;
 								t3Start = false;
+								t3F = false;
+								t2F= false ;
+								t1F = false;
+								tCas1.interrupt();
+								tCas2.interrupt();
+								tCas3.interrupt();
 								break;
 							}
 						}
+						this.interrupt();
 					}
 				};
 				tCas4.start();
