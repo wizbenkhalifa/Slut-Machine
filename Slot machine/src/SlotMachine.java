@@ -268,10 +268,10 @@ public class SlotMachine {
 					public void run () {
 						while(true){
 							if(t3F && t2F && t1F){
+								System.out.println("entrato");
 								Display.getDefault().asyncExec(new Runnable() {
 									@Override
 									public void run() {
-					
 										btnSpin.setEnabled(true);
 									}
 								});
