@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 
 import org.eclipse.swt.widgets.Text;
@@ -82,13 +83,8 @@ public class SlotMachine {
 		Color green = new Color(null,218,253,218);
 		shell = new Shell();
 
-		shell.setSize(497, 462);
+		shell.setSize(500, 500);
 		shell.setText("SWT Application");
-		
-		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
-		lblNewLabel.setBounds(48, 40, 55, 15);
-		lblNewLabel.setText("New Label");
 		
 		oggetti.add(new Casella("mela", new Image(d, "mela.jpg/")));
 		oggetti.add(new Casella("banana", new Image(d, "banana.jpg/")));
@@ -156,151 +152,151 @@ public class SlotMachine {
 		btnSpin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				btnSpin.setEnabled(false);
-				final Thread tCas1;
-				gc = new GC(canvas);
-				gc2 = new GC(canvas2);
-				gc3 = new GC(canvas3);
-				tCas1 = new Thread () {
-					@Override
-					public void run () {
-						t1Start = true;
-						random = new Random();
-						int k = 0, l;
-						long t = 2;
-						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
-							if(k>2){
-								k = 0;
-							}
-							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
-								gc.drawImage(oggetti.get(k).getImage(), 0, i);
-								//t++;
-								try {
-									Thread.sleep(t);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
+					btnSpin.setEnabled(false);
+					final Thread tCas1;
+					gc = new GC(canvas);
+					gc2 = new GC(canvas2);
+					gc3 = new GC(canvas3);
+					tCas1 = new Thread () {
+						@Override
+						public void run () {
+							t1Start = true;
+							random = new Random();
+							int k = 0, l;
+							long t = 2;
+							for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
+								if(k>2){
+									k = 0;
 								}
-							}
-							System.out.println(k);
-						}
-						k--;
-						gc.drawImage(oggetti.get(k).getImage(), 0, 0);
-						t1F = true;
-					}
-				};
-				if(!t1Start){
-					tCas1.start ();
-				}
-				
-				//--------------------------------------------------------------------------------------------------
-				
-				final Thread tCas2;
-				tCas2 = new Thread () {
-					@Override
-					public void run () {
-						t2Start = true;
-						random = new Random();
-						int k = 0;
-						long t = 5;
-						for(int j=0; j<random.nextInt(10 - 5)+5; j++, k++){
-							if(k>2){
-								k = 0;
-							}
-							
-							if(j%5==0){
-								t++;
-							}
-							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
-								gc2.drawImage(oggetti.get(k).getImage(), 0, i);
-								//t++;
-								try {
-									Thread.sleep(t);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
+								for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
+									gc.drawImage(oggetti.get(k).getImage(), 0, i);
+									//t++;
+									try {
+										Thread.sleep(t);
+									} catch (InterruptedException e1) {
+										e1.printStackTrace();
+									}
 								}
+								System.out.println(k);
 							}
-							System.out.println(k);
+							k--;
+							gc.drawImage(oggetti.get(k).getImage(), 0, 0);
+							t1F = true;
 						}
-						k--;
-						gc2.drawImage(oggetti.get(k).getImage(), 0, 0);
-						t2F = true;
-					}
-				};
-				if(!t2Start){
-					tCas2.start ();
-				}
-				
-				//-----------------------------------------------------------------------------------
-				
-				final Thread tCas3;
-				tCas3 = new Thread () {
-					@Override
-					public void run () {
-						t3Start = true;
-						random = new Random();
-						int k = 0, l;
-						long t = 3;
-						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
-							if(k>2){
-								k = 0;
-							}
-							
-							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
-								gc3.drawImage(oggetti.get(k).getImage(), 0, i);
-								//t++;
-								try {
-									Thread.sleep(t);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
-								}
-							}
-							System.out.println(k);
-						}
-						k--;
-						gc3.drawImage(oggetti.get(k).getImage(), 0, 0);
-						t3F = true;
+					};
+					if(!t1Start){
+						tCas1.start ();
 					}
 					
-				};
-				
-				if(!t3Start){
-					tCas3.start();
-				}
-				
-				//--------------------------------------------------------------------------------*/
-				
-				Thread tCas4 = null;
-				tCas4 = new Thread () {
-					@SuppressWarnings("deprecation")
-					@Override
-					public void run () {
-						while(true){
-							System.out.println(t3F);
-							if(t3F && t2F && t1F){
-								System.out.println("entrato");
-								org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
-									@Override
-									public void run() {
-										btnSpin.setEnabled(true);
+					//--------------------------------------------------------------------------------------------------
+					
+					final Thread tCas2;
+					tCas2 = new Thread () {
+						@Override
+						public void run () {
+							t2Start = true;
+							random = new Random();
+							int k = 0;
+							long t = 5;
+							for(int j=0; j<random.nextInt(10 - 5)+5; j++, k++){
+								if(k>2){
+									k = 0;
+								}
+								
+								if(j%5==0){
+									t++;
+								}
+								for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
+									gc2.drawImage(oggetti.get(k).getImage(), 0, i);
+									//t++;
+									try {
+										Thread.sleep(t);
+									} catch (InterruptedException e1) {
+										e1.printStackTrace();
 									}
-								});
-								t1Start = false;
-								t2Start = false;
-								t3Start = false;
-								t3F = false;
-								t2F= false ;
-								t1F = false;
-								tCas1.interrupt();
-								tCas2.interrupt();
-								tCas3.interrupt();
-								break;
+								}
+								System.out.println(k);
 							}
+							k--;
+							gc2.drawImage(oggetti.get(k).getImage(), 0, 0);
+							t2F = true;
 						}
-						this.interrupt();
+					};
+					if(!t2Start){
+						tCas2.start ();
 					}
-				};
-				tCas4.start();
-				}
+					
+					//-----------------------------------------------------------------------------------
+					
+					final Thread tCas3;
+					tCas3 = new Thread () {
+						@Override
+						public void run () {
+							t3Start = true;
+							random = new Random();
+							int k = 0, l;
+							long t = 3;
+							for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
+								if(k>2){
+									k = 0;
+								}
+								
+								for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
+									gc3.drawImage(oggetti.get(k).getImage(), 0, i);
+									//t++;
+									try {
+										Thread.sleep(t);
+									} catch (InterruptedException e1) {
+										e1.printStackTrace();
+									}
+								}
+								System.out.println(k);
+							}
+							k--;
+							gc3.drawImage(oggetti.get(k).getImage(), 0, 0);
+							t3F = true;
+						}
+						
+					};
+					
+					if(!t3Start){
+						tCas3.start();
+					}
+					
+					//--------------------------------------------------------------------------------*/
+					
+					Thread tCas4 = null;
+					tCas4 = new Thread () {
+						@SuppressWarnings("deprecation")
+						@Override
+						public void run () {
+							while(true){
+								System.out.println(t3F);
+								if(t3F && t2F && t1F){
+									System.out.println("entrato");
+									org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
+										@Override
+										public void run() {
+											btnSpin.setEnabled(true);
+										}
+									});
+									t1Start = false;
+									t2Start = false;
+									t3Start = false;
+									t3F = false;
+									t2F= false ;
+									t1F = false;
+									tCas1.interrupt();
+									tCas2.interrupt();
+									tCas3.interrupt();
+									break;
+								}
+							}
+							this.interrupt();
+						}
+					};
+					tCas4.start();
+					}
 		});
 		btnSpin.setBounds(333, 61, 75, 63);
 		btnSpin.setBounds(382, 327, 75, 63);
