@@ -195,7 +195,7 @@ public class SlotMachine {
 						random = new Random();
 						int k = 0, l;
 						long t = 5;
-						for(int j=0; j<random.nextInt(40 - 15)+15; j++, k++){
+						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
 							if(k>2){
 								k = 0;
 							}
@@ -267,24 +267,20 @@ public class SlotMachine {
 					@Override
 					public void run () {
 						while(true){
-							System.out.println(t3F);
-							System.out.println(t2F);
-							System.out.println(t1F);
-							if(t3F == true){
-								System.out.println(t3F);
-								System.out.println(t2F);
-								System.out.println(t1F);
-								btnSpin.setEnabled(true);
-								/*tCas3.destroy();
-								tCas2.destroy();
-								tCas1.destroy();*/
+							if(t3F && t2F && t1F){
+								Display.getDefault().asyncExec(new Runnable() {
+									@Override
+									public void run() {
+					
+										btnSpin.setEnabled(true);
+									}
+								});
 								t1Start = false;
 								t2Start = false;
 								t3Start = false;
-								//break;
+								break;
 							}
 						}
-						//this.destroy();
 					}
 				};
 				tCas4.start();
