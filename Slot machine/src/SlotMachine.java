@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 
 public class SlotMachine {
@@ -98,6 +99,7 @@ public class SlotMachine {
 		canvas.setBounds(30, 115, 100, 104);
 		
 		cas3 = new Text(shell, SWT.BORDER);
+		cas3.setBounds(346, 10, 76, 66);
 		cas3.setBounds(346, 10, 76, 66);
 
 		Button btnReset = new Button(shell, SWT.NONE);
