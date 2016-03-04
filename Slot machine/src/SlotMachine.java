@@ -163,7 +163,7 @@ public class SlotMachine {
 						random = new Random();
 						int k = 0, l;
 						long t = 2;
-						for(int j=0; j<random.nextInt(40 - 15)+15; j++, k++){
+						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
 							if(k>2){
 								k = 0;
 							}
@@ -195,9 +195,9 @@ public class SlotMachine {
 					public void run () {
 						t2Start = true;
 						random = new Random();
-						int k = 0, l;
+						int k = 0;
 						long t = 5;
-						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
+						for(int j=0; j<random.nextInt(10 - 5)+5; j++, k++){
 							if(k>2){
 								k = 0;
 							}
@@ -235,7 +235,7 @@ public class SlotMachine {
 						random = new Random();
 						int k = 0, l;
 						long t = 3;
-						for(int j=0; j<random.nextInt(40 - 15)+15; j++, k++){
+						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
 							if(k>2){
 								k = 0;
 							}
@@ -269,6 +269,7 @@ public class SlotMachine {
 					@Override
 					public void run () {
 						while(true){
+							System.out.println(t3F);
 							if(t3F && t2F && t1F){
 								System.out.println("entrato");
 								Display.getDefault().asyncExec(new Runnable() {
