@@ -36,6 +36,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 public class SlotMachine {
 	private ArrayList<Casella> oggetti = new ArrayList<Casella>();
+	private int Credito;
 	protected Shell shell;
 	private Text cas3;
 	private Random random;
@@ -55,7 +56,8 @@ public class SlotMachine {
 	private boolean t2Start = false;
 	private boolean t3Start = false;
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
-
+	private boolean on = false;
+	
 	public static void main(String[] args) {
 		try {
 			SlotMachine window = new SlotMachine();
@@ -82,6 +84,14 @@ public class SlotMachine {
 	protected void createContents() {
 		Color green = new Color(null,218,253,218);
 		shell = new Shell();
+		shell.addPaintListener(new PaintListener() {
+			public void paintControl(PaintEvent arg0) {
+				if(!on){
+					on = true;
+					MessageDialog.openQuestion(shell, "Quanti soldi hai?", "Soldi:");
+				}
+			}
+		});
 
 		shell.setSize(500, 500);
 		shell.setText("SWT Application");
@@ -180,7 +190,15 @@ public class SlotMachine {
 								System.out.println(k);
 							}
 							k--;
-							gc.drawImage(oggetti.get(k).getImage(), 0, 0);
+							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
+								gc.drawImage(oggetti.get(k).getImage(), 0, i);
+								//t++;
+								try {
+									Thread.sleep(t);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+							}
 							t1F = true;
 						}
 					};
@@ -215,10 +233,17 @@ public class SlotMachine {
 										e1.printStackTrace();
 									}
 								}
-								System.out.println(k);
 							}
 							k--;
-							gc2.drawImage(oggetti.get(k).getImage(), 0, 0);
+							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
+								gc2.drawImage(oggetti.get(k).getImage(), 0, i);
+								//t++;
+								try {
+									Thread.sleep(t);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+							}
 							t2F = true;
 						}
 					};
@@ -250,10 +275,17 @@ public class SlotMachine {
 										e1.printStackTrace();
 									}
 								}
-								System.out.println(k);
 							}
 							k--;
-							gc3.drawImage(oggetti.get(k).getImage(), 0, 0);
+							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
+								gc3.drawImage(oggetti.get(k).getImage(), 0, i);
+								//t++;
+								try {
+									Thread.sleep(t);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+							}
 							t3F = true;
 						}
 						
