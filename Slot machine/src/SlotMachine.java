@@ -38,7 +38,6 @@ public class SlotMachine {
 	private ArrayList<Casella> oggetti = new ArrayList<Casella>();
 	private int Credito;
 	protected Shell shell;
-	private Text cas3;
 	private Random random;
 	private Label p1;
 	private Label p2;
@@ -92,26 +91,25 @@ public class SlotMachine {
 				}
 			}
 		});
+		shell.setImage(SWTResourceManager.getImage("C:\\Users\\gallinagreta\\git\\Slut-Machine\\Slot machine\\slot.png"));
+		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
-		shell.setSize(500, 500);
+		shell.setSize(500, 533);
 		shell.setText("SWT Application");
+		shell.setBackgroundImage(SWTResourceManager.getImage("C:\\Users\\gallinagreta\\git\\Slut-Machine\\Slot machine\\slot.png"));
 		
 		oggetti.add(new Casella("mela", new Image(d, "mela.jpg/")));
 		oggetti.add(new Casella("banana", new Image(d, "banana.jpg/")));
 		oggetti.add(new Casella("pesca", new Image(d, "pesca.jpg/")));
 		
 		Canvas canvas2 = new Canvas(shell, SWT.NONE);
-		canvas2.setBounds(194, 115, 100, 104);
+		canvas2.setBounds(194, 160, 109, 133);
 		
 		Canvas canvas3 = new Canvas(shell, SWT.NONE);
-		canvas3.setBounds(346, 115, 100, 104);
+		canvas3.setBounds(326, 160, 109, 133);
 		
 		Canvas canvas = new Canvas(shell, SWT.NONE);
 		canvas.setBounds(30, 115, 100, 104);
-		
-		cas3 = new Text(shell, SWT.BORDER);
-		cas3.setBounds(346, 10, 76, 66);
-		cas3.setBounds(346, 10, 76, 66);
 
 		Button btnReset = new Button(shell, SWT.NONE);
 		btnReset.setBounds(10, 327, 75, 63);
@@ -333,19 +331,55 @@ public class SlotMachine {
 		btnSpin.setBounds(333, 61, 75, 63);
 		btnSpin.setBounds(382, 327, 75, 63);
 		btnSpin.setText("SPIN");
+		canvas.setBounds(65, 160, 109, 133);
 		p1 = new Label(shell, SWT.NONE);
 		p1.setAlignment(SWT.CENTER);
-		p1.setBounds(30, 265, 100, 15);
+		p1.setBounds(65, 314, 142, 33);
 		p1.setText("1000000");
 		
 		p2 = new Label(shell, SWT.NONE);
 		p2.setAlignment(SWT.CENTER);
-		p2.setBounds(194, 265, 100, 15);
-		p2.setText("0000000000");
+		p2.setBounds(225, 314, 44, 33);
+		p2.setText("000");
 		
 		p3 = new Label(shell, SWT.NONE);
 		p3.setAlignment(SWT.CENTER);
-		p3.setBounds(346, 265, 111, 15);
-		p3.setText("00000000000000");
+		p3.setBounds(286, 314, 90, 33);
+		p3.setText("00000000");
+		
+		Label lblSpin = new Label(shell, SWT.NONE);
+		lblSpin.setAlignment(SWT.CENTER);
+		lblSpin.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		lblSpin.setBounds(397, 422, 61, 63);
+		formToolkit.adapt(lblSpin, true, true);
+		lblSpin.setText("SPIN");
+		
+		Label lblBetMax = new Label(shell, SWT.NONE);
+		lblBetMax.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		lblBetMax.setAlignment(SWT.CENTER);
+		lblBetMax.setBounds(258, 422, 55, 52);
+		formToolkit.adapt(lblBetMax, true, true);
+		lblBetMax.setText("BET MAX");
+		
+		Label lblBetOne = new Label(shell, SWT.NONE);
+		lblBetOne.setAlignment(SWT.CENTER);
+		lblBetOne.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		lblBetOne.setBounds(187, 422, 55, 52);
+		formToolkit.adapt(lblBetOne, true, true);
+		lblBetOne.setText("BET ONE");
+		
+		Label lblPalyTable = new Label(shell, SWT.NONE);
+		lblPalyTable.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		lblPalyTable.setAlignment(SWT.CENTER);
+		lblPalyTable.setBounds(119, 422, 55, 52);
+		formToolkit.adapt(lblPalyTable, true, true);
+		lblPalyTable.setText("PALY TABLE");
+		
+		Label lblReset = new Label(shell, SWT.NONE);
+		lblReset.setAlignment(SWT.CENTER);
+		lblReset.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
+		lblReset.setBounds(44, 422, 55, 52);
+		formToolkit.adapt(lblReset, true, true);
+		lblReset.setText("RESET");
 	}
 }
