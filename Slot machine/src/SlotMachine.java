@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 
@@ -32,6 +35,8 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 
 
 public class SlotMachine {
@@ -87,7 +92,15 @@ public class SlotMachine {
 			public void paintControl(PaintEvent arg0) {
 				if(!on){
 					on = true;
-					MessageDialog.openQuestion(shell, "Quanti soldi hai?", "Soldi:");
+					JFrame frame = new JFrame("Credito");
+				    String name = JOptionPane.showInputDialog(frame, "Inerisci credito");
+				    try {
+						Credito = Integer.parseInt(name);
+					} catch (NumberFormatException e) {
+						MessageDialog.openWarning(shell, "Errore", "valore inserito non valido");
+						on = false;
+					}
+				    on = true;
 				}
 			}
 		});
@@ -123,14 +136,10 @@ public class SlotMachine {
 		btnBetOne.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				int puntata;
 				try {
-					puntata=Integer.parseInt(p2.getText());
-					puntata++;
-					p2.setText(Integer.toString(puntata));
+					p2.setText(Integer.toString(Integer.parseInt(p2.getText()++)));
 				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					MessageDialog.openError(shell, "Errore", "Valore non valido");
 				}
 			}
 		});
@@ -348,6 +357,177 @@ public class SlotMachine {
 		p3.setText("00000000");
 		
 		Label lblSpin = new Label(shell, SWT.NONE);
+		lblSpin.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				btnSpin.setEnabled(false);
+				final Thread tCas1;
+				gc = new GC(canvas);
+				gc2 = new GC(canvas2);
+				gc3 = new GC(canvas3);
+				tCas1 = new Thread () {
+					@Override
+					public void run () {
+						t1Start = true;
+						random = new Random();
+						int k = 0, l;
+						long t = 2;
+						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
+							if(k>2){
+								k = 0;
+							}
+							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
+								gc.drawImage(oggetti.get(k).getImage(), 0, i);
+								//t++;
+								try {
+									Thread.sleep(t);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+							}
+							System.out.println(k);
+						}
+						k--;
+						for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
+							gc.drawImage(oggetti.get(k).getImage(), 0, i);
+							//t++;
+							try {
+								Thread.sleep(t);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+						}
+						t1F = true;
+					}
+				};
+				if(!t1Start){
+					tCas1.start ();
+				}
+				
+				//--------------------------------------------------------------------------------------------------
+				
+				final Thread tCas2;
+				tCas2 = new Thread () {
+					@Override
+					public void run () {
+						t2Start = true;
+						random = new Random();
+						int k = 0;
+						long t = 5;
+						for(int j=0; j<random.nextInt(10 - 5)+5; j++, k++){
+							if(k>2){
+								k = 0;
+							}
+							
+							if(j%5==0){
+								t++;
+							}
+							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
+								gc2.drawImage(oggetti.get(k).getImage(), 0, i);
+								//t++;
+								try {
+									Thread.sleep(t);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+							}
+						}
+						k--;
+						for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
+							gc2.drawImage(oggetti.get(k).getImage(), 0, i);
+							//t++;
+							try {
+								Thread.sleep(t);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+						}
+						t2F = true;
+					}
+				};
+				if(!t2Start){
+					tCas2.start ();
+				}
+				
+				//-----------------------------------------------------------------------------------
+				
+				final Thread tCas3;
+				tCas3 = new Thread () {
+					@Override
+					public void run () {
+						t3Start = true;
+						random = new Random();
+						int k = 0, l;
+						long t = 3;
+						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
+							if(k>2){
+								k = 0;
+							}
+							
+							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
+								gc3.drawImage(oggetti.get(k).getImage(), 0, i);
+								//t++;
+								try {
+									Thread.sleep(t);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+							}
+						}
+						k--;
+						for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
+							gc3.drawImage(oggetti.get(k).getImage(), 0, i);
+							//t++;
+							try {
+								Thread.sleep(t);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+						}
+						t3F = true;
+					}
+					
+				};
+				
+				if(!t3Start){
+					tCas3.start();
+				}
+				
+				//--------------------------------------------------------------------------------*/
+				
+				Thread tCas4 = null;
+				tCas4 = new Thread () {
+					@SuppressWarnings("deprecation")
+					@Override
+					public void run () {
+						while(true){
+							System.out.println(t3F);
+							if(t3F && t2F && t1F){
+								System.out.println("entrato");
+								org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
+									@Override
+									public void run() {
+										btnSpin.setEnabled(true);
+									}
+								});
+								t1Start = false;
+								t2Start = false;
+								t3Start = false;
+								t3F = false;
+								t2F= false ;
+								t1F = false;
+								tCas1.interrupt();
+								tCas2.interrupt();
+								tCas3.interrupt();
+								break;
+							}
+						}
+						this.interrupt();
+					}
+				};
+				tCas4.start();
+				}
+		});
 		lblSpin.setAlignment(SWT.CENTER);
 		lblSpin.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblSpin.setBounds(397, 422, 61, 63);
