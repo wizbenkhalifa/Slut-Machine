@@ -137,7 +137,7 @@ public class SlotMachine {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					p2.setText(Integer.toString(Integer.parseInt(p2.getText()++)));
+					p2.setText(Integer.toString(Integer.parseInt(p2.getText()+1)));
 				} catch (NumberFormatException e1) {
 					MessageDialog.openError(shell, "Errore", "Valore non valido");
 				}
