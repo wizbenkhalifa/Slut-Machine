@@ -37,6 +37,8 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.TouchListener;
+import org.eclipse.swt.events.TouchEvent;
 
 
 public class SlotMachine {
@@ -104,12 +106,12 @@ public class SlotMachine {
 				}
 			}
 		});
-		shell.setImage(SWTResourceManager.getImage("C:\\Users\\gallinagreta\\git\\Slut-Machine\\Slot machine\\slot.png"));
+		shell.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/slot.png"));
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 		shell.setSize(500, 533);
 		shell.setText("SWT Application");
-		shell.setBackgroundImage(SWTResourceManager.getImage("C:\\Users\\gallinagreta\\git\\Slut-Machine\\Slot machine\\slot.png"));
+		shell.setBackgroundImage(SWTResourceManager.getImage(SlotMachine.class, "/img/slot.png"));
 		
 		oggetti.add(new Casella("mela", new Image(d, "mela.jpg/")));
 		oggetti.add(new Casella("banana", new Image(d, "banana.jpg/")));
@@ -123,223 +125,6 @@ public class SlotMachine {
 		
 		Canvas canvas = new Canvas(shell, SWT.NONE);
 		canvas.setBounds(30, 115, 100, 104);
-
-		Button btnReset = new Button(shell, SWT.NONE);
-		btnReset.setBounds(10, 327, 75, 63);
-		btnReset.setText("RESET");
-		
-		Button btnPlayTable = new Button(shell, SWT.NONE);
-		btnPlayTable.setText("PLAY TABLE");
-		btnPlayTable.setBounds(91, 327, 75, 63);
-		
-		Button btnBetOne = new Button(shell, SWT.NONE);
-		btnBetOne.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				try {
-					p2.setText(Integer.toString(Integer.parseInt(p2.getText()+1)));
-				} catch (NumberFormatException e1) {
-					MessageDialog.openError(shell, "Errore", "Valore non valido");
-				}
-			}
-		});
-		btnBetOne.setText("BET ONE");
-		btnBetOne.setBounds(170, 327, 75, 63);
-		
-		Button btnBetMax = new Button(shell, SWT.NONE);
-		btnBetMax.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				int allin;
-				try {
-					allin=Integer.parseInt(p1.getText());
-					p2.setText(Integer.toString(allin));
-				} catch (NumberFormatException e1) {
-					e1.printStackTrace();
-				}
-				
-			}
-		});
-		btnBetMax.setText("BET MAX");
-		btnBetMax.setBounds(251, 327, 75, 63);
-		
-		Button btnSpin = new Button(shell, SWT.NONE);
-		btnSpin.setTouchEnabled(true);
-		
-		btnSpin.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-					btnSpin.setEnabled(false);
-					final Thread tCas1;
-					gc = new GC(canvas);
-					gc2 = new GC(canvas2);
-					gc3 = new GC(canvas3);
-					tCas1 = new Thread () {
-						@Override
-						public void run () {
-							t1Start = true;
-							random = new Random();
-							int k = 0, l;
-							long t = 2;
-							for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
-								if(k>2){
-									k = 0;
-								}
-								for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
-									gc.drawImage(oggetti.get(k).getImage(), 0, i);
-									//t++;
-									try {
-										Thread.sleep(t);
-									} catch (InterruptedException e1) {
-										e1.printStackTrace();
-									}
-								}
-								System.out.println(k);
-							}
-							k--;
-							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
-								gc.drawImage(oggetti.get(k).getImage(), 0, i);
-								//t++;
-								try {
-									Thread.sleep(t);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
-								}
-							}
-							t1F = true;
-						}
-					};
-					if(!t1Start){
-						tCas1.start ();
-					}
-					
-					//--------------------------------------------------------------------------------------------------
-					
-					final Thread tCas2;
-					tCas2 = new Thread () {
-						@Override
-						public void run () {
-							t2Start = true;
-							random = new Random();
-							int k = 0;
-							long t = 5;
-							for(int j=0; j<random.nextInt(10 - 5)+5; j++, k++){
-								if(k>2){
-									k = 0;
-								}
-								
-								if(j%5==0){
-									t++;
-								}
-								for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
-									gc2.drawImage(oggetti.get(k).getImage(), 0, i);
-									//t++;
-									try {
-										Thread.sleep(t);
-									} catch (InterruptedException e1) {
-										e1.printStackTrace();
-									}
-								}
-							}
-							k--;
-							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
-								gc2.drawImage(oggetti.get(k).getImage(), 0, i);
-								//t++;
-								try {
-									Thread.sleep(t);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
-								}
-							}
-							t2F = true;
-						}
-					};
-					if(!t2Start){
-						tCas2.start ();
-					}
-					
-					//-----------------------------------------------------------------------------------
-					
-					final Thread tCas3;
-					tCas3 = new Thread () {
-						@Override
-						public void run () {
-							t3Start = true;
-							random = new Random();
-							int k = 0, l;
-							long t = 3;
-							for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
-								if(k>2){
-									k = 0;
-								}
-								
-								for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
-									gc3.drawImage(oggetti.get(k).getImage(), 0, i);
-									//t++;
-									try {
-										Thread.sleep(t);
-									} catch (InterruptedException e1) {
-										e1.printStackTrace();
-									}
-								}
-							}
-							k--;
-							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
-								gc3.drawImage(oggetti.get(k).getImage(), 0, i);
-								//t++;
-								try {
-									Thread.sleep(t);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
-								}
-							}
-							t3F = true;
-						}
-						
-					};
-					
-					if(!t3Start){
-						tCas3.start();
-					}
-					
-					//--------------------------------------------------------------------------------*/
-					
-					Thread tCas4 = null;
-					tCas4 = new Thread () {
-						@SuppressWarnings("deprecation")
-						@Override
-						public void run () {
-							while(true){
-								System.out.println(t3F);
-								if(t3F && t2F && t1F){
-									System.out.println("entrato");
-									org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
-										@Override
-										public void run() {
-											btnSpin.setEnabled(true);
-										}
-									});
-									t1Start = false;
-									t2Start = false;
-									t3Start = false;
-									t3F = false;
-									t2F= false ;
-									t1F = false;
-									tCas1.interrupt();
-									tCas2.interrupt();
-									tCas3.interrupt();
-									break;
-								}
-							}
-							this.interrupt();
-						}
-					};
-					tCas4.start();
-					}
-		});
-		btnSpin.setBounds(333, 61, 75, 63);
-		btnSpin.setBounds(382, 327, 75, 63);
-		btnSpin.setText("SPIN");
 		canvas.setBounds(65, 160, 109, 133);
 		p1 = new Label(shell, SWT.NONE);
 		p1.setAlignment(SWT.CENTER);
@@ -357,6 +142,7 @@ public class SlotMachine {
 		p3.setText("00000000");
 		
 		Label lblSpin = new Label(shell, SWT.NONE);
+		lblSpin.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
 		lblSpin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
@@ -535,6 +321,7 @@ public class SlotMachine {
 		lblSpin.setText("SPIN");
 		
 		Label lblBetMax = new Label(shell, SWT.NONE);
+		lblBetMax.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		lblBetMax.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblBetMax.setAlignment(SWT.CENTER);
 		lblBetMax.setBounds(258, 422, 55, 52);
@@ -542,24 +329,35 @@ public class SlotMachine {
 		lblBetMax.setText("BET MAX");
 		
 		Label lblBetOne = new Label(shell, SWT.NONE);
+		lblBetOne.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		lblBetOne.setAlignment(SWT.CENTER);
 		lblBetOne.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblBetOne.setBounds(187, 422, 55, 52);
 		formToolkit.adapt(lblBetOne, true, true);
 		lblBetOne.setText("BET ONE");
 		
-		Label lblPalyTable = new Label(shell, SWT.NONE);
-		lblPalyTable.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		lblPalyTable.setAlignment(SWT.CENTER);
-		lblPalyTable.setBounds(119, 422, 55, 52);
-		formToolkit.adapt(lblPalyTable, true, true);
-		lblPalyTable.setText("PALY TABLE");
-		
 		Label lblReset = new Label(shell, SWT.NONE);
+		lblReset.addTouchListener(new TouchListener() {
+			public void touch(TouchEvent arg0) {
+				System.out.println("reset");
+			}
+		});
+		lblReset.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/reset.png"));
+		lblReset.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
 		lblReset.setAlignment(SWT.CENTER);
 		lblReset.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblReset.setBounds(44, 422, 55, 52);
 		formToolkit.adapt(lblReset, true, true);
-		lblReset.setText("RESET");
+		
+		Button btnNewButton = new Button(shell, SWT.NONE);
+		btnNewButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				System.out.println("pay table");
+			}
+		});
+		btnNewButton.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/paytable.png"));
+		btnNewButton.setBounds(119, 429, 45, 44);
+		formToolkit.adapt(btnNewButton, true, true);
 	}
 }
