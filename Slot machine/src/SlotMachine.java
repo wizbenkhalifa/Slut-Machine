@@ -40,21 +40,21 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.TouchListener;
 import org.eclipse.swt.events.TouchEvent;
 
-
 public class SlotMachine {
 	private ArrayList<Casella> oggetti = new ArrayList<Casella>();
-	private int Credito;
+	private static int credito;
+	private static int bet;
 	protected Shell shell;
 	private Random random;
-	private Label p1;
-	private Label p2;
+	private static Label p1;
+	private static Label p2;
 	private Label p3;
 	private static Canvas canvas;
-	static Display d= Display.getDefault();
-	private GC gc;	
-	private GC gc2;	
-	private GC gc3;	
-	static final  private Button btnSpin =  null;
+	static Display d = Display.getDefault();
+	private GC gc;
+	private GC gc2;
+	private GC gc3;
+	static final private Button btnSpin = null;
 	private boolean t1F = false;
 	private boolean t2F = false;
 	private boolean t3F = false;
@@ -63,7 +63,7 @@ public class SlotMachine {
 	private boolean t3Start = false;
 	private final FormToolkit formToolkit = new FormToolkit(Display.getDefault());
 	private boolean on = false;
-	
+
 	public static void main(String[] args) {
 		try {
 			SlotMachine window = new SlotMachine();
@@ -73,7 +73,6 @@ public class SlotMachine {
 		}
 	}
 
-	
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
@@ -86,269 +85,298 @@ public class SlotMachine {
 		}
 	}
 
-	
+	public static void aggiornaCredito() {
+		p1.setText(Integer.toString(credito));
+		p2.setText(Integer.toString(bet));
+	}
+
 	protected void createContents() {
-		Color green = new Color(null,218,253,218);
+		Color green = new Color(null, 218, 253, 218);
 		shell = new Shell();
 		shell.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent arg0) {
-				if(!on){
+				if (!on) {
 					on = true;
 					JFrame frame = new JFrame("Credito");
-				    String name = JOptionPane.showInputDialog(frame, "Inerisci credito");
-				    try {
-						Credito = Integer.parseInt(name);
+					String name = JOptionPane.showInputDialog(frame, "Inerisci credito");
+					try {
+						credito = Integer.parseInt(name);
 					} catch (NumberFormatException e) {
 						MessageDialog.openWarning(shell, "Errore", "valore inserito non valido");
 						on = false;
 					}
-				    on = true;
+					on = true;
 				}
 			}
 		});
-		shell.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/slot.png"));
+		shell.setImage(SWTResourceManager.getImage(SlotMachine.class, "img/slot.png"));
 		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 		shell.setSize(500, 533);
 		shell.setText("SWT Application");
 		shell.setBackgroundImage(SWTResourceManager.getImage(SlotMachine.class, "/img/slot.png"));
-		
-		oggetti.add(new Casella("mela", new Image(d, "mela.jpg/")));
-		oggetti.add(new Casella("banana", new Image(d, "banana.jpg/")));
-		oggetti.add(new Casella("pesca", new Image(d, "pesca.jpg/")));
-		
+
+		oggetti.add(new Casella("mela", new Image(d, "src/img/mela.jpg/")));
+		oggetti.add(new Casella("banana", new Image(d, "src/img/banana.jpg/")));
+		oggetti.add(new Casella("pesca", new Image(d, "src/img/pesca.jpg/")));
+
 		Canvas canvas2 = new Canvas(shell, SWT.NONE);
 		canvas2.setBounds(194, 160, 109, 133);
-		
+
 		Canvas canvas3 = new Canvas(shell, SWT.NONE);
 		canvas3.setBounds(326, 160, 109, 133);
-		
+
 		Canvas canvas = new Canvas(shell, SWT.NONE);
 		canvas.setBounds(30, 115, 100, 104);
 		canvas.setBounds(65, 160, 109, 133);
+
 		p1 = new Label(shell, SWT.NONE);
 		p1.setAlignment(SWT.CENTER);
 		p1.setBounds(65, 314, 142, 33);
 		p1.setText("1000000");
-		
+
 		p2 = new Label(shell, SWT.NONE);
 		p2.setAlignment(SWT.CENTER);
 		p2.setBounds(225, 314, 44, 33);
 		p2.setText("000");
-		
+
 		p3 = new Label(shell, SWT.NONE);
 		p3.setAlignment(SWT.CENTER);
-		p3.setBounds(286, 314, 90, 33);
+		p3.setBounds(286, 314, 92, 33);
 		p3.setText("00000000");
-		
+
 		Label lblSpin = new Label(shell, SWT.NONE);
 		lblSpin.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
 		lblSpin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				btnSpin.setEnabled(false);
-				final Thread tCas1;
-				gc = new GC(canvas);
-				gc2 = new GC(canvas2);
-				gc3 = new GC(canvas3);
-				tCas1 = new Thread () {
-					@Override
-					public void run () {
-						t1Start = true;
-						random = new Random();
-						int k = 0, l;
-						long t = 2;
-						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
-							if(k>2){
-								k = 0;
-							}
-							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
-								gc.drawImage(oggetti.get(k).getImage(), 0, i);
-								//t++;
-								try {
-									Thread.sleep(t);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
+				if (bet > 0) {
+					final Thread tCas1;
+					gc = new GC(canvas);
+					gc2 = new GC(canvas2);
+					gc3 = new GC(canvas3);
+					tCas1 = new Thread() {
+						@Override
+						public void run() {
+							t1Start = true;
+							random = new Random();
+							int k = 0, l;
+							long t = 2;
+							for (int j = 0; j < random.nextInt(20 - 15) + 15; j++, k++) {
+								if (k > 2) {
+									k = 0;
 								}
-							}
-							System.out.println(k);
-						}
-						k--;
-						for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
-							gc.drawImage(oggetti.get(k).getImage(), 0, i);
-							//t++;
-							try {
-								Thread.sleep(t);
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
-						}
-						t1F = true;
-					}
-				};
-				if(!t1Start){
-					tCas1.start ();
-				}
-				
-				//--------------------------------------------------------------------------------------------------
-				
-				final Thread tCas2;
-				tCas2 = new Thread () {
-					@Override
-					public void run () {
-						t2Start = true;
-						random = new Random();
-						int k = 0;
-						long t = 5;
-						for(int j=0; j<random.nextInt(10 - 5)+5; j++, k++){
-							if(k>2){
-								k = 0;
-							}
-							
-							if(j%5==0){
-								t++;
-							}
-							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
-								gc2.drawImage(oggetti.get(k).getImage(), 0, i);
-								//t++;
-								try {
-									Thread.sleep(t);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
-								}
-							}
-						}
-						k--;
-						for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
-							gc2.drawImage(oggetti.get(k).getImage(), 0, i);
-							//t++;
-							try {
-								Thread.sleep(t);
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
-						}
-						t2F = true;
-					}
-				};
-				if(!t2Start){
-					tCas2.start ();
-				}
-				
-				//-----------------------------------------------------------------------------------
-				
-				final Thread tCas3;
-				tCas3 = new Thread () {
-					@Override
-					public void run () {
-						t3Start = true;
-						random = new Random();
-						int k = 0, l;
-						long t = 3;
-						for(int j=0; j<random.nextInt(20 - 15)+15; j++, k++){
-							if(k>2){
-								k = 0;
-							}
-							
-							for(int i=-80; i<oggetti.get(k).getImage().getBounds().height+30; i++){
-								gc3.drawImage(oggetti.get(k).getImage(), 0, i);
-								//t++;
-								try {
-									Thread.sleep(t);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
-								}
-							}
-						}
-						k--;
-						for(int i=-80; i<oggetti.get(k).getImage().getBounds().height/2-45; i++){
-							gc3.drawImage(oggetti.get(k).getImage(), 0, i);
-							//t++;
-							try {
-								Thread.sleep(t);
-							} catch (InterruptedException e1) {
-								e1.printStackTrace();
-							}
-						}
-						t3F = true;
-					}
-					
-				};
-				
-				if(!t3Start){
-					tCas3.start();
-				}
-				
-				//--------------------------------------------------------------------------------*/
-				
-				Thread tCas4 = null;
-				tCas4 = new Thread () {
-					@SuppressWarnings("deprecation")
-					@Override
-					public void run () {
-						while(true){
-							System.out.println(t3F);
-							if(t3F && t2F && t1F){
-								System.out.println("entrato");
-								org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
-									@Override
-									public void run() {
-										btnSpin.setEnabled(true);
+								for (int i = -80; i < oggetti.get(k).getImage().getBounds().height + 30; i++) {
+									gc.drawImage(oggetti.get(k).getImage(), 0, i);
+									// t++;
+									try {
+										Thread.sleep(t);
+									} catch (InterruptedException e1) {
+										e1.printStackTrace();
 									}
-								});
-								t1Start = false;
-								t2Start = false;
-								t3Start = false;
-								t3F = false;
-								t2F= false ;
-								t1F = false;
-								tCas1.interrupt();
-								tCas2.interrupt();
-								tCas3.interrupt();
-								break;
+								}
+								System.out.println(k);
 							}
+							k--;
+							for (int i = -80; i < oggetti.get(k).getImage().getBounds().height / 2 - 45; i++) {
+								gc.drawImage(oggetti.get(k).getImage(), 0, i);
+								// t++;
+								try {
+									Thread.sleep(t);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+							}
+							t1F = true;
 						}
-						this.interrupt();
+					};
+					if (!t1Start) {
+						tCas1.start();
 					}
-				};
-				tCas4.start();
+
+					// --------------------------------------------------------------------------------------------------
+
+					final Thread tCas2;
+					tCas2 = new Thread() {
+						@Override
+						public void run() {
+							t2Start = true;
+							random = new Random();
+							int k = 0;
+							long t = 5;
+							for (int j = 0; j < random.nextInt(10 - 5) + 5; j++, k++) {
+								if (k > 2) {
+									k = 0;
+								}
+
+								if (j % 5 == 0) {
+									t++;
+								}
+								for (int i = -80; i < oggetti.get(k).getImage().getBounds().height + 40; i++) {
+									gc2.drawImage(oggetti.get(k).getImage(), 0, i);
+									try {
+										Thread.sleep(t);
+									} catch (InterruptedException e1) {
+										e1.printStackTrace();
+									}
+								}
+							}
+							k--;
+							for (int i = -80; i < oggetti.get(k).getImage().getBounds().height / 2 - 45; i++) {
+								gc2.drawImage(oggetti.get(k).getImage(), 0, i);
+								// t++;
+								try {
+									Thread.sleep(t);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+							}
+							t2F = true;
+						}
+					};
+					if (!t2Start) {
+						tCas2.start();
+					}
+
+					// -----------------------------------------------------------------------------------
+
+					final Thread tCas3;
+					tCas3 = new Thread() {
+						@Override
+						public void run() {
+							t3Start = true;
+							random = new Random();
+							int k = 0, l;
+							long t = 3;
+							for (int j = 0; j < random.nextInt(20 - 15) + 15; j++, k++) {
+								if (k > 2) {
+									k = 0;
+								}
+
+								for (int i = -80; i < oggetti.get(k).getImage().getBounds().height + 30; i++) {
+									gc3.drawImage(oggetti.get(k).getImage(), 0, i);
+									// t++;
+									try {
+										Thread.sleep(t);
+									} catch (InterruptedException e1) {
+										e1.printStackTrace();
+									}
+								}
+							}
+							k--;
+							for (int i = -80; i < oggetti.get(k).getImage().getBounds().height / 2 - 45; i++) {
+								gc3.drawImage(oggetti.get(k).getImage(), 0, i);
+								// t++;
+								try {
+									Thread.sleep(t);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+								}
+							}
+							t3F = true;
+						}
+
+					};
+
+					if (!t3Start) {
+						tCas3.start();
+					}
+
+					// --------------------------------------------------------------------------------*/
+
+					Thread tCas4 = null;
+					tCas4 = new Thread() {
+						@SuppressWarnings("deprecation")
+						@Override
+						public void run() {
+							while (true) {
+								if (t3F && t2F && t1F) {
+									/*org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
+										@Override
+										public void run() {
+											btnSpin.setEnabled(true);
+										}
+									});*/
+									t1Start = false;
+									t2Start = false;
+									t3Start = false;
+									t3F = false;
+									t2F = false;
+									t1F = false;
+									tCas1.interrupt();
+									tCas2.interrupt();
+									tCas3.interrupt();
+									if(oggetti.get(0).compareTo(oggetti.get(1), oggetti.get(2))){
+										credito += bet;
+										bet = 0;
+										aggiornaCredito();
+									}else{
+										bet = 0;
+										aggiornaCredito();
+									}
+									break;
+								}
+							}
+							this.interrupt();
+						}
+					};
+					tCas4.start();
+				} else {
+					MessageDialog.openWarning(shell, "Avviso", "Devi inserire il credito");
 				}
+			}
 		});
 		lblSpin.setAlignment(SWT.CENTER);
 		lblSpin.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblSpin.setBounds(397, 422, 61, 63);
 		formToolkit.adapt(lblSpin, true, true);
 		lblSpin.setText("SPIN");
-		
+
 		Label lblBetMax = new Label(shell, SWT.NONE);
+		lblBetMax.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				bet = 99;
+				credito -= 99;
+				aggiornaCredito();
+			}
+		});
 		lblBetMax.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		lblBetMax.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblBetMax.setAlignment(SWT.CENTER);
 		lblBetMax.setBounds(258, 422, 55, 52);
 		formToolkit.adapt(lblBetMax, true, true);
 		lblBetMax.setText("BET MAX");
-		
+
 		Label lblBetOne = new Label(shell, SWT.NONE);
+		lblBetOne.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+				bet += 1;
+				credito -= 1;
+				aggiornaCredito();
+			}
+		});
 		lblBetOne.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		lblBetOne.setAlignment(SWT.CENTER);
 		lblBetOne.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblBetOne.setBounds(187, 422, 55, 52);
 		formToolkit.adapt(lblBetOne, true, true);
 		lblBetOne.setText("BET ONE");
-		
+
 		Label lblReset = new Label(shell, SWT.NONE);
 		lblReset.addTouchListener(new TouchListener() {
 			public void touch(TouchEvent arg0) {
 				System.out.println("reset");
 			}
 		});
-		lblReset.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/reset.png"));
+		lblReset.setImage(SWTResourceManager.getImage(SlotMachine.class, "src/img/reset.png"));
 		lblReset.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
 		lblReset.setAlignment(SWT.CENTER);
 		lblReset.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
 		lblReset.setBounds(44, 422, 55, 52);
 		formToolkit.adapt(lblReset, true, true);
-		
+
 		Button btnNewButton = new Button(shell, SWT.NONE);
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -356,8 +384,8 @@ public class SlotMachine {
 				System.out.println("pay table");
 			}
 		});
-		btnNewButton.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/paytable.png"));
-		btnNewButton.setBounds(119, 429, 45, 44);
+		btnNewButton.setImage(SWTResourceManager.getImage(SlotMachine.class, "src/img/paytable.png"));
+		btnNewButton.setBounds(118, 430, 45, 44);
 		formToolkit.adapt(btnNewButton, true, true);
 	}
 }
