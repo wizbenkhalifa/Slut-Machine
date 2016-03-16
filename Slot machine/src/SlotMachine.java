@@ -44,6 +44,7 @@ public class SlotMachine {
 	private ArrayList<Casella> oggetti = new ArrayList<Casella>();
 	private static int credito;
 	private static int bet;
+	private static int vincita;
 	protected Shell shell;
 	private Random random;
 	private static Label p1;
@@ -86,8 +87,13 @@ public class SlotMachine {
 	}
 
 	public static void aggiornaCredito() {
-		p1.setText(Integer.toString(credito));
-		p2.setText(Integer.toString(bet));
+		org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				p1.setText(Integer.toString(credito));
+				p2.setText(Integer.toString(bet));
+			}
+		});
 	}
 
 	protected void createContents() {
@@ -96,16 +102,15 @@ public class SlotMachine {
 		shell.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent arg0) {
 				if (!on) {
-					on = true;
 					JFrame frame = new JFrame("Credito");
-					String name = JOptionPane.showInputDialog(frame, "Inerisci credito");
 					try {
-						credito = Integer.parseInt(name);
+						credito = Integer.parseInt(JOptionPane.showInputDialog(frame, "Inerisci credito"));
+						on = true;
 					} catch (NumberFormatException e) {
 						MessageDialog.openWarning(shell, "Errore", "valore inserito non valido");
 						on = false;
 					}
-					on = true;
+					aggiornaCredito();
 				}
 			}
 		});
@@ -133,7 +138,7 @@ public class SlotMachine {
 		p1 = new Label(shell, SWT.NONE);
 		p1.setAlignment(SWT.CENTER);
 		p1.setBounds(65, 314, 142, 33);
-		p1.setText("1000000");
+		p1.setText("00000000000000");
 
 		p2 = new Label(shell, SWT.NONE);
 		p2.setAlignment(SWT.CENTER);
@@ -151,6 +156,7 @@ public class SlotMachine {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				if (bet > 0) {
+					System.out.println("cioa");
 					final Thread tCas1;
 					gc = new GC(canvas);
 					gc2 = new GC(canvas2);
@@ -303,12 +309,12 @@ public class SlotMachine {
 									t3F = false;
 									t2F = false;
 									t1F = false;
-									tCas1.interrupt();
-									tCas2.interrupt();
-									tCas3.interrupt();
+									/*tCas1.destroy();;
+									tCas2.destroy();
+									tCas3.destroy();*/
 									if(oggetti.get(0).compareTo(oggetti.get(1), oggetti.get(2))){
+										vincita = bet * 2;
 										credito += bet;
-										bet = 0;
 										aggiornaCredito();
 									}else{
 										bet = 0;
@@ -317,7 +323,7 @@ public class SlotMachine {
 									break;
 								}
 							}
-							this.interrupt();
+							//this.destroy();
 						}
 					};
 					tCas4.start();
@@ -336,9 +342,11 @@ public class SlotMachine {
 		lblBetMax.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				bet = 99;
-				credito -= 99;
-				aggiornaCredito();
+				if(bet<99 && credito >= 99){
+					bet = 99;
+					credito -= 99;
+					aggiornaCredito();
+				}
 			}
 		});
 		lblBetMax.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
@@ -352,9 +360,11 @@ public class SlotMachine {
 		lblBetOne.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				bet += 1;
-				credito -= 1;
-				aggiornaCredito();
+				if(bet < 99 && credito > 0){
+					bet += 1;
+					credito -= 1;
+					aggiornaCredito();
+				}
 			}
 		});
 		lblBetOne.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
