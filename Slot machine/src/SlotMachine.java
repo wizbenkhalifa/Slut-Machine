@@ -45,7 +45,7 @@ public class SlotMachine {
 	private static int credito;
 	private static int bet;
 	private static int vincita;
-	protected Shell shell;
+	protected Shell shlGiocoDemmerda;
 	private Random random;
 	private static Label p1;
 	private static Label p2;
@@ -77,9 +77,9 @@ public class SlotMachine {
 	public void open() {
 		Display display = Display.getDefault();
 		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
+		shlGiocoDemmerda.open();
+		shlGiocoDemmerda.layout();
+		while (!shlGiocoDemmerda.isDisposed()) {
 			if (!display.readAndDispatch()) {
 				display.sleep();
 			}
@@ -98,14 +98,14 @@ public class SlotMachine {
 
 	protected void createContents() {
 		Color green = new Color(null, 218, 253, 218);
-		shell = new Shell();
-		shell.setImage(SWTResourceManager.getImage(SlotMachine.class, "img/slot.png"));
-		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		shlGiocoDemmerda = new Shell();
+		shlGiocoDemmerda.setImage(SWTResourceManager.getImage(SlotMachine.class, "img/slot.png"));
+		shlGiocoDemmerda.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
-		shell.setSize(500, 533);
-		shell.setText("SWT Application");
-		shell.setBackgroundImage(SWTResourceManager.getImage(SlotMachine.class, "/img/slot.png"));
-		shell.addPaintListener(new PaintListener() {
+		shlGiocoDemmerda.setSize(500, 533);
+		shlGiocoDemmerda.setText("GIOCO DEMMERDA");
+		shlGiocoDemmerda.setBackgroundImage(SWTResourceManager.getImage(SlotMachine.class, "/img/slot.png"));
+		shlGiocoDemmerda.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent arg0) {
 				if (!on) {
 					JFrame frame = new JFrame("Credito");
@@ -113,7 +113,7 @@ public class SlotMachine {
 						credito = Integer.parseInt(JOptionPane.showInputDialog(frame, "Inerisci credito"));
 						on = true;
 					} catch (NumberFormatException e) {
-						MessageDialog.openWarning(shell, "Errore", "valore inserito non valido");
+						MessageDialog.openWarning(shlGiocoDemmerda, "Errore", "valore inserito non valido");
 						on = false;
 					}
 					aggiornaCredito();
@@ -125,98 +125,51 @@ public class SlotMachine {
 		oggetti.add(new Casella("banana", new Image(d, "src/img/banana.jpg/")));
 		oggetti.add(new Casella("pesca", new Image(d, "src/img/pesca.jpg/")));
 
-		Canvas canvas2 = new Canvas(shell, SWT.NONE);
+		Canvas canvas2 = new Canvas(shlGiocoDemmerda, SWT.NONE);
 		canvas2.setBounds(194, 160, 109, 133);
 
-		Canvas canvas3 = new Canvas(shell, SWT.NONE);
+		Canvas canvas3 = new Canvas(shlGiocoDemmerda, SWT.NONE);
 		canvas3.setBounds(326, 160, 109, 133);
 
-		Canvas canvas = new Canvas(shell, SWT.NONE);
+		Canvas canvas = new Canvas(shlGiocoDemmerda, SWT.NONE);
 		canvas.setBounds(30, 115, 100, 104);
 		canvas.setBounds(65, 160, 109, 133);
 
-		p1 = new Label(shell, SWT.NONE);
+		p1 = new Label(shlGiocoDemmerda, SWT.NONE);
 		p1.setAlignment(SWT.CENTER);
 		p1.setBounds(65, 314, 142, 33);
 		p1.setText("00000000000000");
 
-		p2 = new Label(shell, SWT.NONE);
+		p2 = new Label(shlGiocoDemmerda, SWT.NONE);
 		p2.setAlignment(SWT.CENTER);
 		p2.setBounds(225, 314, 44, 33);
 		p2.setText("000");
 
-		p3 = new Label(shell, SWT.NONE);
+		p3 = new Label(shlGiocoDemmerda, SWT.NONE);
 		p3.setAlignment(SWT.CENTER);
 		p3.setBounds(286, 314, 92, 33);
 		p3.setText("00000000");
 
-		Label lblSpin = new Label(shell, SWT.NONE);
-		lblSpin.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
-		lblSpin.setAlignment(SWT.CENTER);
-		lblSpin.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		lblSpin.setBounds(403, 35, 61, 63);
-		formToolkit.adapt(lblSpin, true, true);
-		lblSpin.setText("SPIN");
-
-		Label lblBetMax = new Label(shell, SWT.NONE);
-		lblBetMax.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		lblBetMax.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		lblBetMax.setAlignment(SWT.CENTER);
-		lblBetMax.setBounds(323, 35, 55, 52);
-		formToolkit.adapt(lblBetMax, true, true);
-		lblBetMax.setText("BET MAX");
-
-		Label lblBetOne = new Label(shell, SWT.NONE);
-		lblBetOne.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-				if(bet < 99 && credito > 0){
-					bet += 1;
-					credito -= 1;
-					aggiornaCredito();
-				}
-			}
-		});
-		lblBetOne.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		lblBetOne.setAlignment(SWT.CENTER);
-		lblBetOne.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		lblBetOne.setBounds(92, 35, 55, 52);
-		formToolkit.adapt(lblBetOne, true, true);
-		lblBetOne.setText("BET ONE");
-
-		Label lblReset = new Label(shell, SWT.NONE);
-		lblReset.addTouchListener(new TouchListener() {
-			public void touch(TouchEvent arg0) {
-				System.out.println("reset");
-			}
-		});
-		lblReset.setImage(SWTResourceManager.getImage(SlotMachine.class, "src/img/reset.png"));
-		lblReset.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
-		lblReset.setAlignment(SWT.CENTER);
-		lblReset.setFont(SWTResourceManager.getFont("Segoe UI", 9, SWT.BOLD));
-		lblReset.setBounds(214, 35, 55, 52);
-		formToolkit.adapt(lblReset, true, true);
-
 		
-		Button btnNewButton = new Button(shell, SWT.NONE);
-		btnNewButton.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/reset.png"));
-		btnNewButton.setBounds(49, 428, 43, 43);
-		formToolkit.adapt(btnNewButton, true, true);
+		Button reset = new Button(shlGiocoDemmerda, SWT.NONE);
+		reset.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/reset.png"));
+		reset.setBounds(49, 428, 43, 43);
+		formToolkit.adapt(reset, true, true);
 		
-		Button btnNewButton_1 = new Button(shell, SWT.NONE);
-		btnNewButton_1.addSelectionListener(new SelectionAdapter() {
+		Button payt = new Button(shlGiocoDemmerda, SWT.NONE);
+		payt.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				MessageDialog.openError(shell, "Coglione!!!!!", "NON GIOCARE D'AZZARDO!!!");
+				MessageDialog.openError(shlGiocoDemmerda, "Coglione!!!!!", "NON GIOCARE D'AZZARDO!!!");
 				
 			}
 		});
-		btnNewButton_1.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/paytable.png"));
-		btnNewButton_1.setBounds(120, 428, 45, 44);
-		formToolkit.adapt(btnNewButton_1, true, true);
+		payt.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/paytable.png"));
+		payt.setBounds(120, 428, 45, 44);
+		formToolkit.adapt(payt, true, true);
 		
-		Button btnNewButton_2 = new Button(shell, SWT.NONE);
-		btnNewButton_2.addSelectionListener(new SelectionAdapter() {
+		Button beto = new Button(shlGiocoDemmerda, SWT.NONE);
+		beto.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if(bet < 99 && credito > 0){
@@ -226,12 +179,12 @@ public class SlotMachine {
 				}
 			}
 		});
-		btnNewButton_2.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/betone.png"));
-		btnNewButton_2.setBounds(192, 428, 42, 40);
-		formToolkit.adapt(btnNewButton_2, true, true);
+		beto.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/betone.png"));
+		beto.setBounds(192, 428, 42, 40);
+		formToolkit.adapt(beto, true, true);
 		
-		Button btnNewButton_3 = new Button(shell, SWT.NONE);
-		btnNewButton_3.addSelectionListener(new SelectionAdapter() {
+		Button betm = new Button(shlGiocoDemmerda, SWT.NONE);
+		betm.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if(bet<99 && credito >= 99){
@@ -241,15 +194,18 @@ public class SlotMachine {
 				}
 			}
 		});
-		btnNewButton_3.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/betmax.png"));
-		btnNewButton_3.setBounds(263, 428, 45, 42);
-		formToolkit.adapt(btnNewButton_3, true, true);
+		betm.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/betmax.png"));
+		betm.setBounds(263, 428, 45, 42);
+		formToolkit.adapt(betm, true, true);
 		
-		Button button = new Button(shell, SWT.NONE);
-		button.addSelectionListener(new SelectionAdapter() {
+		Button spin = new Button(shlGiocoDemmerda, SWT.NONE);
+		spin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (bet > 0) {
+					int d [] = new int[3];
+					spin.setEnabled(false);
+					spin.setVisible(false);
 					System.out.println("cioa");
 					Thread tCas1;
 					gc = new GC(canvas);
@@ -275,9 +231,9 @@ public class SlotMachine {
 										e1.printStackTrace();
 									}
 								}
-								System.out.println(k);
 							}
 							k--;
+							d[0] = k;
 							for (int i = -80; i < oggetti.get(k).getImage().getBounds().height / 2 - 45; i++) {
 								gc.drawImage(oggetti.get(k).getImage(), 0, i);
 								// t++;
@@ -288,7 +244,6 @@ public class SlotMachine {
 								}
 							}
 							t1F = true;
-							this.stop();
 						}
 					};
 					if (!t1Start) {
@@ -323,6 +278,7 @@ public class SlotMachine {
 								}
 							}
 							k--;
+							d[1] = k;
 							for (int i = -80; i < oggetti.get(k).getImage().getBounds().height / 2 - 45; i++) {
 								gc2.drawImage(oggetti.get(k).getImage(), 0, i);
 								// t++;
@@ -333,7 +289,6 @@ public class SlotMachine {
 								}
 							}
 							t2F = true;
-							this.stop();
 						}
 					};
 					if (!t2Start) {
@@ -366,6 +321,7 @@ public class SlotMachine {
 								}
 							}
 							k--;
+							d[2] = k;
 							for (int i = -80; i < oggetti.get(k).getImage().getBounds().height / 2 - 45; i++) {
 								gc3.drawImage(oggetti.get(k).getImage(), 0, i);
 								// t++;
@@ -376,7 +332,6 @@ public class SlotMachine {
 								}
 							}
 							t3F = true;
-							this.stop();
 						}
 					};
 
@@ -392,13 +347,17 @@ public class SlotMachine {
 						@Override
 						public void run() {
 							while (true) {
+								System.out.println(t1F);
+								System.out.println(t2F);
+								System.out.println(t3F);
 								if (t3F && t2F && t1F) {
-									/*org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
+									org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
 										@Override
 										public void run() {
-											btnSpin.setEnabled(true);
+											spin.setEnabled(true);
+											spin.setVisible(true);
 										}
-									});*/
+									});
 									t1Start = false;
 									t2Start = false;
 									t3Start = false;
@@ -408,28 +367,26 @@ public class SlotMachine {
 									tCas1.stop();
 									tCas2.stop();
 									tCas3.stop();
-									if(oggetti.get(0).compareTo(oggetti.get(1), oggetti.get(2))){
+									if(oggetti.get(d[0]).compareTo(oggetti.get(d[1]), oggetti.get(d[2]))){
 										vincita = bet * 2;
 										credito += bet;
 										aggiornaCredito();
 									}else{
-										bet = 0;
 										aggiornaCredito();
 									}
 									break;
 								}
 							}
-							//this.destroy();
 						}
 					};
 					tCas4.start();
 				} else {
-					MessageDialog.openWarning(shell, "Avviso", "Devi inserire il credito");
+					MessageDialog.openWarning(shlGiocoDemmerda, "Avviso", "Devi inserire il credito");
 				}
 			}
 		});
-		button.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/spin.png"));
-		button.setBounds(401, 425, 50, 50);
-		formToolkit.adapt(button, true, true);
+		spin.setImage(SWTResourceManager.getImage(SlotMachine.class, "/img/spin.png"));
+		spin.setBounds(401, 425, 50, 50);
+		formToolkit.adapt(spin, true, true);
 	}
 }
