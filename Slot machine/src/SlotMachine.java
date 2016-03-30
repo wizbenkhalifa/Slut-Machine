@@ -47,6 +47,7 @@ import org.eclipse.swt.events.TouchEvent;
 
 public class SlotMachine {
 	private ArrayList<Casella> oggetti = new ArrayList<Casella>();
+	private int c1, c2, c3;
 	private static int credito;
 	private static int bet;
 	private static int vincita;
@@ -125,8 +126,8 @@ public class SlotMachine {
 				if (!on) {
 					JFrame frame = new JFrame("Credito");
 					try {
-						credito = Integer.parseInt(JOptionPane.showInputDialog(frame, "Inerisci credito"));
 						on = true;
+						credito = Integer.parseInt(JOptionPane.showInputDialog(frame, "Inerisci credito"));
 					} catch (NumberFormatException e) {
 						MessageDialog.openWarning(shlGiocoDemmerda, "Errore", "valore inserito non valido");
 						on = false;
@@ -136,19 +137,18 @@ public class SlotMachine {
 			}
 		});
 
-		oggetti.add(new Casella("mela", new Image(d, "src/img/mela.jpg/")));
-		oggetti.add(new Casella("banana", new Image(d, "src/img/banana.jpg/")));
-		oggetti.add(new Casella("pesca", new Image(d, "src/img/pesca.jpg/")));
+		oggetti.add(new Casella("mela", new Image(d, "src/img/mela.png/")));
+		oggetti.add(new Casella("banana", new Image(d, "src/img/banana.png/")));
+		oggetti.add(new Casella("pesca", new Image(d, "src/img/pesca.png/")));
 
 		Canvas canvas2 = new Canvas(shlGiocoDemmerda, SWT.NONE);
-		canvas2.setBounds(194, 160, 109, 133);
+		canvas2.setBounds(181, 146, 139, 147);
 
 		Canvas canvas3 = new Canvas(shlGiocoDemmerda, SWT.NONE);
-		canvas3.setBounds(326, 160, 109, 133);
-
-		Canvas canvas = new Canvas(shlGiocoDemmerda, SWT.NONE);
-		canvas.setBounds(30, 115, 100, 104);
-		canvas.setBounds(65, 160, 109, 133);
+		canvas3.setBounds(326, 146, 125, 147);
+		
+		Canvas canvas1 = new Canvas(shlGiocoDemmerda, SWT.NONE);
+		canvas1.setBounds(49, 146, 126, 147);
 
 		p1 = new Label(shlGiocoDemmerda, SWT.NONE);
 		p1.setAlignment(SWT.CENTER);
@@ -231,7 +231,7 @@ public class SlotMachine {
 					spin.setEnabled(false);
 					spin.setVisible(false);
 					Thread tCas1;
-					gc = new GC(canvas);
+					gc = new GC(canvas1);
 					gc2 = new GC(canvas2);
 					gc3 = new GC(canvas3);
 					tCas1 = new Thread() {
@@ -245,13 +245,12 @@ public class SlotMachine {
 								if (k[0] > 2) {
 									k[0] = 0;
 								}
-								for (i[0] = -80; i[0] < oggetti.get(k[0]).getImage().getBounds().height + 30; i[0]++) {
+								for (i[0] = -80; i[0] < oggetti.get(k[0]).getImage().getBounds().height+100; i[0]++) {
 									Display.getDefault().asyncExec(new Runnable() {
 										public void run() {
 											gc.drawImage(oggetti.get(k[0]).getImage(), 0, i[0]);
 										}
 									});
-									// t++;
 									try {
 										Thread.sleep(t);
 									} catch (InterruptedException e1) {
@@ -261,7 +260,7 @@ public class SlotMachine {
 							}
 							k[0]--;
 							d[0] = k[0];
-							for (i[0] = -80; i[0] < oggetti.get(k[0]).getImage().getBounds().height / 2 - 45; i[0]++) {
+							for (i[0] = -80; i[0] < oggetti.get(k[0]).getImage().getBounds().height / 2 - 30; i[0]++) {
 								Display.getDefault().asyncExec(new Runnable() {
 									public void run() {
 										gc.drawImage(oggetti.get(k[0]).getImage(), 0, i[0]);
@@ -294,7 +293,7 @@ public class SlotMachine {
 								if (k[1] > 2) {
 									k[1] = 0;
 								}
-								for (i[1] = -80; i[1] < oggetti.get(k[1]).getImage().getBounds().height + 40; i[1]++) {
+								for (i[1] = -80; i[1] < oggetti.get(k[1]).getImage().getBounds().height + 100; i[1]++) {
 									Display.getDefault().asyncExec(new Runnable() {
 										public void run() {
 											gc2.drawImage(oggetti.get(k[1]).getImage(), 0, i[1]);
@@ -309,7 +308,7 @@ public class SlotMachine {
 							}
 							k[1]--;
 							d[1] = k[1];
-							for (i[1] = -80; i[1] < oggetti.get(k[1]).getImage().getBounds().height / 2 - 45; i[1]++) {
+							for (i[1] = -80; i[1] < oggetti.get(k[1]).getImage().getBounds().height / 2 - 30; i[1]++) {
 								Display.getDefault().asyncExec(new Runnable() {
 									public void run() {
 										gc2.drawImage(oggetti.get(k[1]).getImage(), 0, i[1]);
@@ -343,13 +342,12 @@ public class SlotMachine {
 									k[2] = 0;
 								}
 
-								for (i[2] = -80; i[2] < oggetti.get(k[2]).getImage().getBounds().height + 30; i[2]++) {
+								for (i[2] = -80; i[2] < oggetti.get(k[2]).getImage().getBounds().height + 100; i[2]++) {
 									Display.getDefault().asyncExec(new Runnable() {
 										public void run() {
 											gc3.drawImage(oggetti.get(k[2]).getImage(), 0, i[2]);
 										}
 									});
-									// t++;
 									try {
 										Thread.sleep(t);
 									} catch (InterruptedException e1) {
@@ -359,13 +357,12 @@ public class SlotMachine {
 							}
 							k[2]--;
 							d[2] = k[2];
-							for (i[2] = -80; i[2] < oggetti.get(k[2]).getImage().getBounds().height / 2 - 45; i[2]++) {
+							for (i[2] = -80; i[2] < oggetti.get(k[2]).getImage().getBounds().height / 2 - 30; i[2]++) {
 								Display.getDefault().asyncExec(new Runnable() {
 									public void run() {
 										gc3.drawImage(oggetti.get(k[2]).getImage(), 0, i[2]);
 									}
 								});
-								// t++;
 								try {
 									Thread.sleep(t);
 								} catch (InterruptedException e1) {
