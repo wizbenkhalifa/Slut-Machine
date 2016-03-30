@@ -11,6 +11,8 @@ import java.util.Random;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -55,7 +57,7 @@ public class SlotMachine {
 	private Random random;
 	private static Label p1;
 	private static Label p2;
-	private Label p3;
+	private static Label p3;
 	private static Canvas canvas;
 	static Display d = Display.getDefault();
 	private GC gc;
@@ -73,7 +75,8 @@ public class SlotMachine {
 	private int[] k = { 0, 0, 0 };
 	private int[] i = { 0, 0, 0 };
 	JFrame frame = new JFrame("Credito");
-
+	File audioFile = new File(""); 
+	
 	public static void main(String[] args) {
 		try {
 			SlotMachine window = new SlotMachine();
@@ -101,6 +104,7 @@ public class SlotMachine {
 			public void run() {
 				p1.setText(Integer.toString(credito));
 				p2.setText(Integer.toString(bet));
+				p3.setText(Integer.toString(vincita));
 			}
 		});
 	}
@@ -110,20 +114,37 @@ public class SlotMachine {
 		shlGiocoDemmerda = new Shell();
 		shlGiocoDemmerda.setImage(SWTResourceManager.getImage(SlotMachine.class, "img/slot.png"));
 		shlGiocoDemmerda.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-
-		/*
-		 * File audioFile = new File(""); try { AudioInputStream audioStream =
-		 * AudioSystem.getAudioInputStream(audioFile); } catch
-		 * (UnsupportedAudioFileException | IOException e2) { // TODO
-		 * Auto-generated catch block e2.printStackTrace(); }
-		 */
-
 		shlGiocoDemmerda.setSize(500, 533);
 		shlGiocoDemmerda.setText("GIOCO DEMMERDA");
 		shlGiocoDemmerda.setBackgroundImage(SWTResourceManager.getImage(SlotMachine.class, "/img/slot.png"));
+		
+		Canvas canvas2 = new Canvas(shlGiocoDemmerda, SWT.NONE);
+		canvas2.setBounds(192, 158, 116, 135);
+
+		Canvas canvas3 = new Canvas(shlGiocoDemmerda, SWT.NONE);
+		canvas3.setBounds(326, 158, 110, 135);
+		
+		Canvas canvas1 = new Canvas(shlGiocoDemmerda, SWT.NONE);
+		canvas1.setBounds(65, 158, 110, 135);
+		
+		oggetti.add(new Casella("banana", new Image(d, "src/img/mela.png/")));
+		oggetti.add(new Casella("pesca", new Image(d, "src/img/bar.png/")));
+		oggetti.add(new Casella("pesca", new Image(d, "src/img/anguria.png/")));
+		oggetti.add(new Casella("pesca", new Image(d, "src/img/limone.png/")));
+		oggetti.add(new Casella("pesca", new Image(d, "src/img/ciliegia.png/")));
+		oggetti.add(new Casella("pesca", new Image(d, "src/img/banana.png/")));
+		oggetti.add(new Casella("pesca", new Image(d, "src/img/pesca.png/")));
+		
 		shlGiocoDemmerda.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent arg0) {
 				if (!on) {
+					random = new Random();
+					gc = new GC(canvas1);
+					gc2 = new GC(canvas2);
+					gc3 = new GC(canvas3);
+					gc.drawImage(oggetti.get(k[0] = random.nextInt(7)).getImage(), 0, 0);
+					gc2.drawImage(oggetti.get(k[1] =random.nextInt(7)).getImage(), 0, 0);
+					gc3.drawImage(oggetti.get(k[2] =random.nextInt(7)).getImage(), 0, 0);
 					JFrame frame = new JFrame("Credito");
 					try {
 						on = true;
@@ -136,19 +157,6 @@ public class SlotMachine {
 				}
 			}
 		});
-
-		oggetti.add(new Casella("mela", new Image(d, "src/img/mela.png/")));
-		oggetti.add(new Casella("banana", new Image(d, "src/img/banana.png/")));
-		oggetti.add(new Casella("pesca", new Image(d, "src/img/pesca.png/")));
-
-		Canvas canvas2 = new Canvas(shlGiocoDemmerda, SWT.NONE);
-		canvas2.setBounds(181, 146, 139, 147);
-
-		Canvas canvas3 = new Canvas(shlGiocoDemmerda, SWT.NONE);
-		canvas3.setBounds(326, 146, 125, 147);
-		
-		Canvas canvas1 = new Canvas(shlGiocoDemmerda, SWT.NONE);
-		canvas1.setBounds(49, 146, 126, 147);
 
 		p1 = new Label(shlGiocoDemmerda, SWT.NONE);
 		p1.setAlignment(SWT.CENTER);
@@ -183,7 +191,7 @@ public class SlotMachine {
 		payt.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				MessageDialog.openError(shlGiocoDemmerda, "Coglione!!!!!", "NON GIOCARE D'AZZARDO!!!");
+				MessageDialog.openInformation(shlGiocoDemmerda, "PlayTable", " - Bar x 3 -> x10\n- Anguria x 3 -> x5");
 
 			}
 		});
@@ -227,25 +235,34 @@ public class SlotMachine {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (bet > 0) {
+					 try { 
+						 File audioFile = new File("spin.wav");
+						 AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+						 Clip clip = AudioSystem.getClip();
+						 clip.open(audioStream);
+				         clip.start();
+					 }catch(UnsupportedAudioFileException | IOException e2) { // TODO
+						 e2.printStackTrace(); 
+					 } catch (LineUnavailableException e1){// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					 
 					int d[] = new int[3];
 					spin.setEnabled(false);
 					spin.setVisible(false);
 					Thread tCas1;
-					gc = new GC(canvas1);
-					gc2 = new GC(canvas2);
-					gc3 = new GC(canvas3);
 					tCas1 = new Thread() {
 						@Override
 						public void run() {
 							t1Start = true;
 							random = new Random();
-							k[0] = 0;
+							//k[0] = 0;
 							long t = 2;
 							for (int j = 0; j < random.nextInt(20 - 15) + 15; j++, k[0]++) {
-								if (k[0] > 2) {
+								if (k[0] > 6) {
 									k[0] = 0;
 								}
-								for (i[0] = -80; i[0] < oggetti.get(k[0]).getImage().getBounds().height+100; i[0]++) {
+								for (i[0] = -120; i[0] < oggetti.get(k[0]).getImage().getBounds().height+100; i[0]++) {
 									Display.getDefault().asyncExec(new Runnable() {
 										public void run() {
 											gc.drawImage(oggetti.get(k[0]).getImage(), 0, i[0]);
@@ -260,7 +277,7 @@ public class SlotMachine {
 							}
 							k[0]--;
 							d[0] = k[0];
-							for (i[0] = -80; i[0] < oggetti.get(k[0]).getImage().getBounds().height / 2 - 30; i[0]++) {
+							for (i[0] = -120; i[0] < oggetti.get(k[0]).getImage().getBounds().height / 2 - 60; i[0]++) {
 								Display.getDefault().asyncExec(new Runnable() {
 									public void run() {
 										gc.drawImage(oggetti.get(k[0]).getImage(), 0, i[0]);
@@ -287,13 +304,13 @@ public class SlotMachine {
 						public void run() {
 							t2Start = true;
 							random = new Random();
-							k[1] = 0;
+							//k[1] = 0;
 							long t = 2;
 							for (int j = 0; j < random.nextInt(10 - 5) + 5; j++, k[1]++) {
-								if (k[1] > 2) {
+								if (k[1] > 6) {
 									k[1] = 0;
 								}
-								for (i[1] = -80; i[1] < oggetti.get(k[1]).getImage().getBounds().height + 100; i[1]++) {
+								for (i[1] = -120; i[1] < oggetti.get(k[1]).getImage().getBounds().height + 100; i[1]++) {
 									Display.getDefault().asyncExec(new Runnable() {
 										public void run() {
 											gc2.drawImage(oggetti.get(k[1]).getImage(), 0, i[1]);
@@ -308,7 +325,7 @@ public class SlotMachine {
 							}
 							k[1]--;
 							d[1] = k[1];
-							for (i[1] = -80; i[1] < oggetti.get(k[1]).getImage().getBounds().height / 2 - 30; i[1]++) {
+							for (i[1] = -120; i[1] < oggetti.get(k[1]).getImage().getBounds().height / 2 - 60; i[1]++) {
 								Display.getDefault().asyncExec(new Runnable() {
 									public void run() {
 										gc2.drawImage(oggetti.get(k[1]).getImage(), 0, i[1]);
@@ -335,14 +352,14 @@ public class SlotMachine {
 						public void run() {
 							t3Start = true;
 							random = new Random();
-							k[2] = 0;
+							//k[2] = 0;
 							long t = 3;
 							for (int j = 0; j < random.nextInt(20 - 15) + 15; j++, k[2]++) {
-								if (k[2] > 2) {
+								if (k[2] > 6) {
 									k[2] = 0;
 								}
 
-								for (i[2] = -80; i[2] < oggetti.get(k[2]).getImage().getBounds().height + 100; i[2]++) {
+								for (i[2] = -120; i[2] < oggetti.get(k[2]).getImage().getBounds().height + 100; i[2]++) {
 									Display.getDefault().asyncExec(new Runnable() {
 										public void run() {
 											gc3.drawImage(oggetti.get(k[2]).getImage(), 0, i[2]);
@@ -357,7 +374,7 @@ public class SlotMachine {
 							}
 							k[2]--;
 							d[2] = k[2];
-							for (i[2] = -80; i[2] < oggetti.get(k[2]).getImage().getBounds().height / 2 - 30; i[2]++) {
+							for (i[2] = -120; i[2] < oggetti.get(k[2]).getImage().getBounds().height / 2 - 60; i[2]++) {
 								Display.getDefault().asyncExec(new Runnable() {
 									public void run() {
 										gc3.drawImage(oggetti.get(k[2]).getImage(), 0, i[2]);
@@ -403,19 +420,66 @@ public class SlotMachine {
 									tCas2.stop();
 									tCas3.stop();
 									if (oggetti.get(d[0]).compareTo(oggetti.get(d[1]), oggetti.get(d[2]))) {
+										try { 
+											File audioFile = new File("jackpot.mp3");
+											 AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+											 Clip clip = AudioSystem.getClip();
+											 clip.open(audioStream);
+									         clip.start();
+										 }catch(UnsupportedAudioFileException | IOException e2) { // TODO
+											 e2.printStackTrace(); 
+										 } catch (LineUnavailableException e1){// TODO Auto-generated catch block
+											e1.printStackTrace();
+										}
+										
 										vincita = bet * 2;
 										credito += vincita;
 										bet = 0;
 										aggiornaCredito();
-									} else {
+									} else if(oggetti.get(d[0]).equals(oggetti.get(1)) && oggetti.get(d[0]).compareTo(oggetti.get(d[1]), oggetti.get(d[2]))){
+										try { 
+											File audioFile = new File("jackpot.mp3");
+											 AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+											 Clip clip = AudioSystem.getClip();
+											 clip.open(audioStream);
+									         clip.start();
+										 }catch(UnsupportedAudioFileException | IOException e2) { // TODO
+											 e2.printStackTrace(); 
+										 } catch (LineUnavailableException e1){// TODO Auto-generated catch block
+											e1.printStackTrace();
+										}
+										vincita = bet * 10;
+										credito += vincita;
+										bet = 0;
 										bet = 0;
 										aggiornaCredito();
-										if (credito <= 0) {
-											credito = Integer.parseInt(JOptionPane.showInputDialog(frame,
-													"Credito esaurito, reinserisci per continuare: "));
+									} else if(oggetti.get(d[0]).equals(oggetti.get(2)) && oggetti.get(d[0]).compareTo(oggetti.get(d[1]), oggetti.get(d[2]))){
+										try { 
+											File audioFile = new File("jackpot.mp3");
+											 AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+											 Clip clip = AudioSystem.getClip();
+											 clip.open(audioStream);
+									         clip.start();
+										 }catch(UnsupportedAudioFileException | IOException e2) { // TODO
+											 e2.printStackTrace(); 
+										 } catch (LineUnavailableException e1){// TODO Auto-generated catch block
+											e1.printStackTrace();
 										}
+										vincita = bet * 5;
+										credito += vincita;
+										bet = 0;
+										aggiornaCredito();
+									}else{
+										bet = 0;
+										vincita = 0;
 										aggiornaCredito();
 									}
+									
+									if (credito <= 0) {
+										credito = Integer.parseInt(JOptionPane.showInputDialog(frame,
+												"Credito esaurito, reinserisci per continuare: "));
+									}
+										aggiornaCredito();
 									break;
 								}
 							}
