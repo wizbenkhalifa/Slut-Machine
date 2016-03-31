@@ -1,11 +1,8 @@
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -20,50 +17,34 @@ import javax.swing.JOptionPane;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Drawable;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.printing.PrintDialog;
-import org.eclipse.swt.printing.PrinterData;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Canvas;
-import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.events.MouseAdapter;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.TouchListener;
-import org.eclipse.swt.events.TouchEvent;
 
 public class SlotMachine {
 	private ArrayList<Casella> oggetti = new ArrayList<Casella>();
-	private int c1, c2, c3;
 	private static int credito;
 	private static int bet;
 	private static int vincita;
+	protected Shell finestra;
 	protected Shell shlGiocoDemmerda;
 	private Random random;
 	private static Label p1;
 	private static Label p2;
 	private static Label p3;
-	private static Canvas canvas;
 	static Display d = Display.getDefault();
 	private GC gc;
 	private GC gc2;
 	private GC gc3;
-	static final private Button btnSpin = null;
 	private boolean t1F = false;
 	private boolean t2F = false;
 	private boolean t3F = false;
@@ -159,7 +140,7 @@ public class SlotMachine {
 		shlGiocoDemmerda.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent arg0) {
 				if (!on) {
-					JFrame frame = new JFrame("Credito");
+				JFrame frame = new JFrame("Credito");
 					try {
 						on = true;
 						credito = Integer.parseInt(JOptionPane.showInputDialog(frame, "Inerisci credito"));
@@ -248,7 +229,7 @@ public class SlotMachine {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (bet > 0) {
-					/* try { 
+					 try { 
 						 File audioFile = new File("spin.wav");
 						 AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
 						Clip clip = AudioSystem.getClip();
@@ -258,11 +239,17 @@ public class SlotMachine {
 						 e2.printStackTrace(); 
 					 } catch (LineUnavailableException e1){// TODO Auto-generated catch block
 						e1.printStackTrace();
-					}*/
+					}
 					 
 					int d[] = new int[3];
 					spin.setEnabled(false);
 					spin.setVisible(false);
+					beto.setEnabled(false);
+					beto.setVisible(false);
+					betm.setEnabled(false);
+					betm.setVisible(false);
+					reset.setEnabled(false);
+					reset.setVisible(false);
 					Thread tCas1;
 					tCas1 = new Thread() {
 						@Override
@@ -275,7 +262,7 @@ public class SlotMachine {
 								if (k[0] > 6) {
 									k[0] = 0;
 								}
-								for (i[0] = -120; i[0] < oggetti.get(k[0]).getImage().getBounds().height+170; i[0]++) {
+								for (i[0] = -120; i[0] < oggetti.get(k[0]).getImage().getBounds().height+190; i[0]++) {
 									Display.getDefault().asyncExec(new Runnable() {
 										public void run() {
 											gc.drawImage(oggetti.get(k[0]).getImage(), 0, i[0]);
@@ -325,7 +312,7 @@ public class SlotMachine {
 								if (k[1] > 6) {
 									k[1] = 0;
 								}
-								for (i[1] = -120; i[1] < oggetti.get(k[1]).getImage().getBounds().height + 170; i[1]++) {
+								for (i[1] = -120; i[1] < oggetti.get(k[1]).getImage().getBounds().height + 190; i[1]++) {
 									Display.getDefault().asyncExec(new Runnable() {
 										public void run() {
 											gc2.drawImage(oggetti.get(k[1]).getImage(), 0, i[1]);
@@ -376,7 +363,7 @@ public class SlotMachine {
 									k[2] = 0;
 								}
 
-								for (i[2] = -120; i[2] < oggetti.get(k[2]).getImage().getBounds().height + 170; i[2]++) {
+								for (i[2] = -120; i[2] < oggetti.get(k[2]).getImage().getBounds().height + 190; i[2]++) {
 									Display.getDefault().asyncExec(new Runnable() {
 										public void run() {
 											gc3.drawImage(oggetti.get(k[2]).getImage(), 0, i[2]);
@@ -426,6 +413,12 @@ public class SlotMachine {
 									org.eclipse.swt.widgets.Display.getDefault().asyncExec(new Runnable() {
 										@Override
 										public void run() {
+											beto.setEnabled(true);
+											beto.setVisible(true);
+											betm.setEnabled(true);
+											betm.setVisible(true);
+											reset.setEnabled(true);
+											reset.setVisible(true);
 											spin.setEnabled(true);
 											spin.setVisible(true);
 										}
